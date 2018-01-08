@@ -1,19 +1,4 @@
 $(window).on('load', function() {
-  // Hide content from long blockquotes in scrolling div
-  const details = $('details');
-
-  details.attr('open', true);
-
-  $.find('pre').forEach(function(el) {
-    const pre = $(el);
-
-    if (pre.height() > 350) {
-      pre.addClass('scrolling');
-    }
-  });
-
-  details.attr('open', false);
-
   // "Copy to Clipboard" buttons
   $('button.copy').on('click', function(e) {
     const button = $(e.target)

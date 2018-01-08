@@ -157,6 +157,173 @@ Copy to Clipboard
 Copy to Clipboard
 </button></li>
 </ol>
+<h4 id="create-the-task-definition">2. Create the Task Definition</h4>
+<p>Task definitions are blueprints for your application. They include details about what containers to run, their resource requirements, environment settings, networking configuration, and task role permission settings. In this step, we'll create a task definition for our application. Complete either the directions using the AWS Management Console or the AWS Command Line Interface.</p>
+<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>Elastic Container Service</strong> under Compute.</p></li>
+<li><p>Click <strong>Task Definitions</strong> in the left-hand navigation.</p></li>
+<li><p>Click <strong>Create new Task Definition</strong>.</p></li>
+<li><p>Click <strong>Fargate</strong> to select the Fargate launch type.</p>
+<div class="figure">
+<img src="images/create-a-service/launch-type.png" />
+
+</div></li>
+<li><p>Click <strong>Next step</strong>.</p></li>
+<li><p>Enter <code>workshop</code> into <strong>Task Definition Name</strong>.</p></li>
+<li><p>Select <strong>WorkshopAppRole</strong> from <strong>Task Role</strong>.</p></li>
+<li><p>Select <strong>0.5GB</strong> from <strong>Task memory (GB)</strong>.</p></li>
+<li><p>Select <strong>0.25 vCPU</strong> from <strong>Task CPU (vCPU)</strong>.</p></li>
+<li><p>Click <strong>Add container</strong>.</p></li>
+<li><p>Enter <code>workshop</code> into <strong>Container name</strong>.</p></li>
+<li><p>In <strong>Image</strong>, paste the repository URI for the Docker image you built and pushed in the previous module. For example, if your Account ID was 123456789012, then you'd enter: <code>123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code></p></li>
+<li><p>Enter <code>8080</code> into <strong>Container port</strong> and select <strong>tcp</strong> from <strong>Protocol</strong> in <strong>Port mappings</strong>.</p></li>
+<li><p>Click <strong>Update</strong>.</p></li>
+<li><p>Click <strong>Create</strong>.</p></li>
+</ol>
+<p><strong>✅ Step-by-step Instructions (AWS CLI)</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
+<li><p>Open the file <code>fargate-workshop-app/ecs/workshop.json</code> by navigating to it in the environment tree and double clicking the filename.</p></li>
+<li><p>The file has the following contents:</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+  <span class="dt">&quot;family&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;requiresCompatibilities&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;FARGATE&quot;</span><span class="ot">]</span><span class="fu">,</span>
+  <span class="dt">&quot;cpu&quot;</span><span class="fu">:</span> <span class="st">&quot;256&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;memory&quot;</span><span class="fu">:</span> <span class="st">&quot;512&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;networkMode&quot;</span><span class="fu">:</span> <span class="st">&quot;awsvpc&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;taskRoleArn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:iam::YOUR_ACCOUNT_ID_HERE:role/WorkshopAppRole&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;executionRoleArn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:iam::YOUR_ACCOUNT_ID_HERE:role/ecsTaskExecutionRole&quot;</span><span class="fu">,</span>
+  <span class="dt">&quot;containerDefinitions&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+    <span class="fu">{</span>
+      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop&quot;</span><span class="fu">,</span>
+      <span class="dt">&quot;image&quot;</span><span class="fu">:</span> <span class="st">&quot;YOUR_ACCOUNT_ID_HERE.dkr.ecr.us-east-1.amazonaws.com/workshop&quot;</span><span class="fu">,</span>
+      <span class="dt">&quot;essential&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span>
+      <span class="dt">&quot;logConfiguration&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+        <span class="dt">&quot;logDriver&quot;</span><span class="fu">:</span> <span class="st">&quot;awslogs&quot;</span><span class="fu">,</span>
+        <span class="dt">&quot;options&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+          <span class="dt">&quot;awslogs-group&quot;</span><span class="fu">:</span> <span class="st">&quot;/ecs/workshop&quot;</span><span class="fu">,</span>
+          <span class="dt">&quot;awslogs-region&quot;</span><span class="fu">:</span> <span class="st">&quot;us-east-1&quot;</span><span class="fu">,</span>
+          <span class="dt">&quot;awslogs-stream-prefix&quot;</span><span class="fu">:</span> <span class="st">&quot;ecs&quot;</span>
+        <span class="fu">}</span>
+      <span class="fu">},</span>
+      <span class="dt">&quot;portMappings&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+          <span class="dt">&quot;protocol&quot;</span><span class="fu">:</span> <span class="st">&quot;tcp&quot;</span><span class="fu">,</span>
+          <span class="dt">&quot;containerPort&quot;</span><span class="fu">:</span> <span class="dv">8080</span>
+        <span class="fu">}</span>
+      <span class="ot">]</span>
+    <span class="fu">}</span>
+  <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div></li>
+<li><p>Replace the <strong>YOUR_ACCOUNT_ID_HERE</strong> placeholders with your <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html">Account ID</a>. Save the file by going to <strong>File</strong> and selecting <strong>Save</strong> in the menu bar, or pressing <strong>⌘-S</strong> (macOS) / <strong>Ctrl-S</strong> (Windows).</p></li>
+<li><p>Create a new task definition from the JSON file by running this command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws ecs register-task-definition --cli-input-json file://~/environment/fargate-workshop-app/ecs/workshop.json</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
+<li><p>Create the CloudWatch Logs log group <code>/ecs/workshop</code> configured in your new task definition by running this command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws logs create-log-group --log-group-name /ecs/workshop</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
+</ol>
+<h4 id="create-an-application-load-balancer">3. Create an Application Load Balancer</h4>
+<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>EC2</strong> under Compute.</p></li>
+<li><p>Click on <strong>Load Balancers</strong> in the left-hand navigation.</p></li>
+<li><p>Click <strong>Create Load Balancer</strong>.</p></li>
+<li><p>In <strong>Application Load Balancer</strong>, click <strong>Create</strong>.</p>
+<div class="figure">
+<img src="images/create-a-service/application-load-balancer.png" />
+
+</div></li>
+<li><p>Enter <code>workshop</code> into <strong>Name</strong>.</p></li>
+<li><p>Select the <strong>VPC</strong> created in the first module when you created the ECS cluster in the first module. If you need to find the VPC ID do one of the following:</p>
+<p><strong>AWS Management Console</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Click on <strong>Services</strong>, right-click on <strong>VPC</strong> under Networking &amp; Content Delivery and click <strong>Open Link in New Tab</strong>.</p></li>
+<li><p>Click on <strong>Your VPCs</strong> in the left-hand navigation.</p></li>
+<li><p>Click on each VPC, and click on its <strong>Tags</strong> tab. The VPC you're looking for has a tag with <strong>Key</strong> <code>aws:cloudformation:stack-name</code> and <strong>Value</strong> <code>EC2ContainerService-workshop</code></p></li>
+</ol>
+<p><strong>AWS CLI</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Run the following command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
+                      --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
+</ol></li>
+<li><p>Select all <strong>Availability Zones</strong> configured for the VPC by checking each checkbox.</p></li>
+<li><p>Click <strong>Next: Configure Security Settings</strong>.</p></li>
+<li><p>The wizard will warn you that you've not established a secure listener as we didn't define an HTTPS listener. Click <strong>Next: Configure Security Groups</strong>.</p></li>
+<li><p>Check the security group the is prefixed with <strong>EC2ContainerService-workshop</strong>. This security group will permit HTTP traffic to ingress to the load balancer.</p></li>
+<li><p>Click <strong>Next: Configure Routing</strong>.</p></li>
+<li><p>Enter <code>workshop</code> into <strong>Name</strong>.</p></li>
+<li><p>Enter <code>8080</code> into <strong>Port</strong>.</p></li>
+<li><p>Select <strong>ip</strong> from <strong>Target type</strong>.</p></li>
+<li><p>Click <strong>Next: Register Targets</strong>. We won't register anything as we'll rely on Amazon ECS to manage our Target Group for us.</p></li>
+<li><p>Click <strong>Next: Review</strong>. Review the details you configured, then click <strong>Create</strong>.</p></li>
+</ol>
+<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
+<li><p>Find the subnets created for your ECS cluster via the first run wizard by running this command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
+                         --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
+<p>Note these subnet IDs for use later in this module.</p></li>
+<li><p>Find the security group created for your sample application via the first run wizard by running this command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
+                                 --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
+<p>Note this security group ID for use later in this module.</p></li>
+<li><p>Create an Application Load Balancer via the AWS CLI in your Cloud9 terminal. You'll need the security group and subnet IDs from the previous two steps:</p>
+<pre class="console"><code>aws elbv2 create-load-balancer --name workshop --subnets subnet-SUBNET_ID_1_HERE subnet-SUBNET_ID_2_HERE --security-groups sg-SECURITY_GROUP_ID_HERE</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
+<p>The command will return information about the new Application Load Balancer:</p>
+<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+    <span class="dt">&quot;LoadBalancers&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+        <span class="fu">{</span>
+            <span class="dt">&quot;IpAddressType&quot;</span><span class="fu">:</span> <span class="st">&quot;ipv4&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;VpcId&quot;</span><span class="fu">:</span> <span class="st">&quot;vpc-abcd1234&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;LoadBalancerArn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/workshop1/ed108c3680cfe3df&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;State&quot;</span><span class="fu">:</span> <span class="fu">{</span>
+                <span class="dt">&quot;Code&quot;</span><span class="fu">:</span> <span class="st">&quot;provisioning&quot;</span>
+            <span class="fu">},</span>
+            <span class="dt">&quot;DNSName&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop1-1971146816.us-east-1.elb.amazonaws.com&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;SecurityGroups&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+                <span class="st">&quot;sg-abcd1234&quot;</span>
+            <span class="ot">]</span><span class="fu">,</span>
+            <span class="dt">&quot;LoadBalancerName&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;CreatedTime&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-01-08T04:09:37.770Z&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;internet-facing&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;application&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;CanonicalHostedZoneId&quot;</span><span class="fu">:</span> <span class="st">&quot;Z35SXDOTRQ7X7K&quot;</span><span class="fu">,</span>
+            <span class="dt">&quot;AvailabilityZones&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+                <span class="fu">{</span>
+                    <span class="dt">&quot;SubnetId&quot;</span><span class="fu">:</span> <span class="st">&quot;subnet-abcd1234&quot;</span><span class="fu">,</span>
+                    <span class="dt">&quot;ZoneName&quot;</span><span class="fu">:</span> <span class="st">&quot;us-east-1d&quot;</span>
+                <span class="fu">}</span><span class="ot">,</span>
+                <span class="fu">{</span>
+                    <span class="dt">&quot;SubnetId&quot;</span><span class="fu">:</span> <span class="st">&quot;subnet-1234abcd&quot;</span><span class="fu">,</span>
+                    <span class="dt">&quot;ZoneName&quot;</span><span class="fu">:</span> <span class="st">&quot;us-east-1c&quot;</span>
+                <span class="fu">}</span>
+            <span class="ot">]</span>
+        <span class="fu">}</span>
+    <span class="ot">]</span>
+<span class="fu">}</span></code></pre></div>
+<p>Note the <strong>LoadBalancerArn</strong> for use later in this module.</p></li>
+</ol>
+<h4 id="create-the-service">4. Create the Service</h4>
 
 </div>
 <div class='col-3 d-none d-lg-block d-xl-block'>
