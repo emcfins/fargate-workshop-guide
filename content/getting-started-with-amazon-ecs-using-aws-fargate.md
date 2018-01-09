@@ -73,6 +73,10 @@ service onto the new cluster.
    the task is placed within AWS Fargate, the container is pulled and started.
    Click the refresh button while the task starts.
 
+    ![](images/getting-started-with-amazon-ecs-using-aws-fargate/provisioning.png)
+    ![](images/getting-started-with-amazon-ecs-using-aws-fargate/pending.png)
+    ![](images/getting-started-with-amazon-ecs-using-aws-fargate/running.png)
+
 1. Once started, click the ID of the task in the **Task** column. This will show
    you task details including networking configuration:
 

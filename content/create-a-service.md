@@ -4,7 +4,7 @@ In this module we will create a new task definition and service to run the
 sample application we built in the previous module. To support this service,
 we'll need to create an AWS Identity and Access Management (AWS IAM) role to
 allow our application to read from and write to the Amazon DynamoDB table it
-uses to store quotations.  We'll also need to create an Application Load
+uses to store quotations. We'll also need to create an Application Load
 Balancer to distribute traffic across the running tasks that are being ran by
 the service.
 
@@ -149,7 +149,7 @@ using the AWS Management Console or the AWS Command Line Interface.
 
 1. Switch to the tab where you have your Cloud9 environment opened.
 
-1. Open the file `fargate-workshop-app/ecs/workshop.json` by navigating
+1. Open the file `fargate-workshop-app/ecs/task_definition.json` by navigating
    to it in the environment tree and double clicking the filename.
 
 1. The file has the following contents:
@@ -195,7 +195,7 @@ using the AWS Management Console or the AWS Command Line Interface.
    your Cloud9 terminal:
 
     ```console
-    aws ecs register-task-definition --cli-input-json file://~/environment/fargate-workshop-app/ecs/workshop.json
+    aws ecs register-task-definition --cli-input-json file://~/environment/fargate-workshop-app/ecs/task_definition.json
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -309,6 +309,8 @@ Docker container.
 
 1. Enter `1` into **Number of tasks**.
 
+    ![](images/create-a-service/configure-service.png)
+
 1. Click **Next step**.
 
 1. Select the **VPC** created in the first module when you created the ECS
@@ -338,10 +340,105 @@ Docker container.
 
 1. Select both subnets in **Subnets**.
 
+    ![](images/create-a-service/network-configuration.png)
+
+1. Select **DISABLED** from **Auto-assign public IP**. Since we're going to be
+   using a load balancer it isn't necessary for the tasks to have their own
+   public IP address.
+
 1. Under **Load Balancing**, tick the **Application Load Balancer** radio
    button.
 
-1. 
+1. Click **Add to load balanacer**.
+
+1. Select **80:HTTP** from **Listener port**.
+
+1. Select **workshop** from **Target group name**.
+
+    ![](images/create-a-service/load-balancer.png)
+
+1. Click **Next step**.
+
+1. The next page allows you to define an Auto Scaling policy. Leave this set to
+   **Do not adjust the service's desired count** for now and click **Next
+   step**.
+
+1. Review your settings and click **Create Service**.
+
+1. The service will now start your task. Click **View Service** and wait for
+   your task to transition to **RUNNING**.
+
+1. Hit your task via the load balancer through the DNSName you noted in the
+   previous section. For example:
+
+    ```console
+    curl -Ss http://workshop-123456789.us-east-1.elb.amazonaws.com/quotes
+    ```
+
+**✅ Step-by-step Instructions (AWS CLI)**
+
+1. Switch to the tab where you have your Cloud9 environment opened.
+
+1. Open the file `fargate-workshop-app/ecs/service.json` by navigating to it in
+   the environment tree and double clicking the filename.
+
+1. There are several placeholders in this file to fill-in: the ARN of the target
+   group and the IDs of the subnets and security group created for us in the
+   first run wizard.
+
+1. To find the ARN of the target group, run this command in the Cloud9
+   terminal:
+
+    ```console
+    aws elbv2 describe-target-groups --names workshop --query TargetGroups[0].TargetGroupArn --output text
+    ```
+    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. To find the IDs of the subnets created in the first run wizard, run this
+   command in the Cloud9 terminal:
+
+    ```console
+    aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
+       --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
+    ```
+    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. To find the ID of the security group created in the first run wizard, run
+   this command in the Cloud9 terminal:
+
+    ```console
+    aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
+       --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
+    ```
+    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. Now that all the values are filled-in, we can create the service by running
+   this command in the Cloud9 terminal:
+
+    ```console
+    aws ecs create-service --cli-input-json file://~/environment/fargate-workshop-app/ecs/service.json
+    ```
+    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. The service will now start your task. Wait for your task to transition to
+   **RUNNING**. You can view the status of your task by running this in your
+   Cloud9 terminal:
+
+    ```console
+    aws ecs describe-tasks \
+      --cluster workshop \
+      --tasks `aws ecs list-tasks --service-name workshop --cluster workshop --query taskArns[] --output text` \
+      --query tasks[].lastStatus \
+      --output text
+    ```
+    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. Hit your task via the load balancer through the DNSName you noted in the
+   previous section. For example:
+
+    ```console
+    curl -Ss http://workshop-123456789.us-east-1.elb.amazonaws.com/quotes
+    ```
 
 ### ⭐ Recap
 
