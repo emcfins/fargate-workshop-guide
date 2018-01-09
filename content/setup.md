@@ -80,6 +80,12 @@ Keep your AWS Cloud9 IDE opened in a tab throughout this workshop as we'll use
 it for activities like building and running a sample app in a Docker container
 and using the AWS Command Line Interface.
 
+### 💡 Tips
+
+💡 Keep an open scratch pad in Cloud9 or a text editor on your local computer
+for notes.  When the step-by-step directions tell you to note something, copy and
+paste that into the scratch pad.
+
 ### ⭐ Recap
 
 🔑 Use a unique personal or development [AWS Account](#aws-account)

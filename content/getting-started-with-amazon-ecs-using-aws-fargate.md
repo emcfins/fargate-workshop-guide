@@ -98,12 +98,8 @@ World application using the Fargate launch type onto that cluster.
 
 ### Next
 
-✅  Take a few moments to inspect aspects of the service in the Amazon ECR
-console. Click on ID of the task in the **Task** column, then click on the
-**Logs** tab to view its logs.
-
 ✅  Proceed to the next module, [Create a Docker Image
-Repository][create-docker-image-repo], where we'll create a new Docker image
+Repository][create-docker-image-repo], wherein we'll create a new Docker image
 repository using Amazon Elastic Container Registry (Amazon ECR).
 
 [create-docker-image-repo]: create-a-docker-image-repository.html

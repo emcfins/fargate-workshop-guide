@@ -20,19 +20,20 @@
 <h1>Running Containers on AWS Fargate</h1>
 <h2 id="create-a-service">Create a Service</h2>
 <p>In this module we will create a new task definition and service to run the sample application we built in the previous module. To support this service, we'll need to create an AWS Identity and Access Management (AWS IAM) role to allow our application to read from and write to the Amazon DynamoDB table it uses to store quotations. We'll also need to create an Application Load Balancer to distribute traffic across the running tasks that are being ran by the service.</p>
-<p>This module provides instructions for creating the service in both the AWS Management Console and the AWS Command Line Interface.</p>
 <h3 id="implementation">Implementation</h3>
 <h4 id="create-the-task-role">1. Create the Task Role</h4>
 <p>Task roles are IAM roles that can be used by the containers in the task. For our application, we need to grant permission to read from and write to the Amazon DynamoDB table we created in the last module.</p>
-<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<p><strong>✅ Step-by-step Instruction</strong></p>
 <ol style="list-style-type: decimal">
 <li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>IAM</strong> under Security, Identity &amp; Compliance.</p></li>
 <li><p>Click on <strong>Roles</strong> in the left-hand navigation.</p></li>
 <li><p>Click <strong>Create role</strong>.</p></li>
-<li><p>First, we'll configure which AWS service can assume this role. Click <strong>Elastic Container Service</strong> from the <strong>Choose the service that will use this role</strong> list. Next, choose <strong>Elastic Container Service Task</strong> from <strong>Select your use case</strong>.</p></li>
+<li><p>First, we'll configure which AWS service can assume this role. Click <strong>Elastic Container Service</strong> from the <strong>Choose the service that will use this role</strong> list.</p></li>
+<li><p>Next, choose <strong>Elastic Container Service Task</strong> from <strong>Select your use case</strong>.</p></li>
 <li><p>Click <strong>Next: Permissions</strong>.</p></li>
 <li><p>Click <strong>Create policy</strong>. The visual policy editor will open in a new tab.</p></li>
 <li><p>Click on <strong>Choose a service</strong> and click <strong>DynamoDB</strong>.</p></li>
+<li><p>Click on <strong>Actions</strong>.</p></li>
 <li><p>Expand the <strong>Read</strong> permissions and check the <strong>Scan</strong> and <strong>GetItem</strong> checkboxes.</p></li>
 <li><p>Expand the <strong>Write</strong> permissions and check the <strong>PutItem</strong> checkbox.</p></li>
 <li><p>Click <strong>Resources</strong> to limit the role to the <strong>quotes</strong> table.</p></li>
@@ -73,89 +74,13 @@
 <img src="images/create-a-service/policy-confirmation.png" />
 
 </div></li>
-<li><p>Return to the original tab where you were creating the role. Click <strong>Refresh</strong> and type <code>WorkshopAppPolicy</code> in the <strong>Filter</strong> textbox. Check the <strong>WorkshopAppPolicy* checkbox. Click </strong>Next: Review**.</p></li>
+<li><p>Return to the original tab where you were creating the role. Click <strong>Refresh</strong> and type <code>WorkshopAppPolicy</code> in the <strong>Filter</strong> textbox. Check the <strong>WorkshopAppPolicy</strong> checkbox. Click <strong>Next: Review</strong>.</p></li>
 <li><p>Enter <code>WorkshopAppRole</code> in <strong>Role name</strong>.</p>
 <div class="figure">
 <img src="images/create-a-service/review-role.png" />
 
 </div></li>
 <li><p>Click <strong>Create role</strong>.</p></li>
-</ol>
-<p><strong>✅ Step-by-step Instructions (AWS CLI)</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
-<li><p>Create a new IAM role called <code>WorkshopAppRole</code> by running this command in the Cloud9 terminal:</p>
-<pre class="console"><code>aws iam create-role --role-name WorkshopAppRole --assume-role-policy-document file://iam/WorkshopAppAssumeRolePolicy.json</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button>
-<p>This creates a role and allows an ECS task to assume that role. Navigate to <code>fargate-workshop-app/iam/WorkshopAppAssumeRolePolicy.json</code> to see the assume role policy document we're assigning to the new role.</p>
-<p>The command will return information about the newly created role:</p>
-<pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ aws iam create-role --role-name WorkshopAppRole --assume-role-policy-document file://iam/WorkshopAppAssumeRolePolicy.json</code></pre>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
-    <span class="dt">&quot;Role&quot;</span><span class="fu">:</span> <span class="fu">{</span>
-        <span class="dt">&quot;AssumeRolePolicyDocument&quot;</span><span class="fu">:</span> <span class="fu">{</span>
-            <span class="dt">&quot;Version&quot;</span><span class="fu">:</span> <span class="st">&quot;2012-10-17&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;Statement&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-                <span class="fu">{</span>
-                    <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="st">&quot;sts:AssumeRole&quot;</span><span class="fu">,</span>
-                    <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span>
-                    <span class="dt">&quot;Principal&quot;</span><span class="fu">:</span> <span class="fu">{</span>
-                        <span class="dt">&quot;Service&quot;</span><span class="fu">:</span> <span class="st">&quot;ecs-tasks.amazonaws.com&quot;</span>
-                    <span class="fu">}</span>
-                <span class="fu">}</span>
-            <span class="ot">]</span>
-        <span class="fu">},</span>
-        <span class="dt">&quot;RoleId&quot;</span><span class="fu">:</span> <span class="st">&quot;AROAJD4AD2SWV6AZAIVN4&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;CreateDate&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-01-07T18:09:03.866Z&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;RoleName&quot;</span><span class="fu">:</span> <span class="st">&quot;WorkshopAppRole&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;/&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;Arn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:iam::123456789012:role/WorkshopAppRolet&quot;</span>
-    <span class="fu">}</span>
-<span class="fu">}</span></code></pre></div></li>
-<li><p>Open the file <code>fargate-workshop-app/iam/WorkshopAppPolicy.json</code> by navigating to it in the environment tree and double clicking the filename.</p></li>
-<li><p>The file has the following contents:</p>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
-    <span class="dt">&quot;Version&quot;</span><span class="fu">:</span> <span class="st">&quot;2012-10-17&quot;</span><span class="fu">,</span>
-    <span class="dt">&quot;Statement&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-        <span class="fu">{</span>
-            <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-                <span class="st">&quot;dynamodb:PutItem&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;dynamodb:GetItem&quot;</span><span class="ot">,</span>
-                <span class="st">&quot;dynamodb:Scan&quot;</span>
-            <span class="ot">]</span><span class="fu">,</span>
-            <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:dynamodb:us-east-1:YOUR_ACCOUNT_ID_HERE:table/quotes&quot;</span>
-        <span class="fu">}</span>
-    <span class="ot">]</span>
-<span class="fu">}</span></code></pre></div>
-<p>Replace the <strong>YOUR_ACCOUNT_ID_HERE</strong> placeholder with your <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html">Account ID</a>. Save the file by going to <strong>File</strong> and selecting <strong>Save</strong> in the menu bar, or pressing <strong>⌘-S</strong> (macOS) / <strong>Ctrl-S</strong> (Windows).</p></li>
-<li><p>Create the IAM policy by running this command in the Cloud9 terminal:</p>
-<pre class="console"><code>aws iam create-policy --role-name WorkshopAppPolicy --policy-document file://iam/WorkshopAppPolicy.json</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button>
-<p>The command will return details about the newly created policy:</p>
-<pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ aws iam create-policy --role-name WorkshopAppPolicy --policy-document file://iam/WorkshopAppPolicy.json</code></pre>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
-    <span class="dt">&quot;Policy&quot;</span><span class="fu">:</span> <span class="fu">{</span>
-        <span class="dt">&quot;PolicyName&quot;</span><span class="fu">:</span> <span class="st">&quot;WorkshopAppPolicy&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;CreateDate&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-01-07T18:12:00.829Z&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;AttachmentCount&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span>
-        <span class="dt">&quot;IsAttachable&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span>
-        <span class="dt">&quot;PolicyId&quot;</span><span class="fu">:</span> <span class="st">&quot;ANPAIITP5ALYCNFCXUTDA&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;DefaultVersionId&quot;</span><span class="fu">:</span> <span class="st">&quot;v1&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;/&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;Arn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:iam::123456789012:policy/WorkshopAppPolicy&quot;</span><span class="fu">,</span>
-        <span class="dt">&quot;UpdateDate&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-01-07T18:12:00.829Z&quot;</span>
-    <span class="fu">}</span>
-<span class="fu">}</span></code></pre></div>
-<p>Note the policy's <strong>Arn</strong> above for use in the next step.</p></li>
-<li><p>Attach the policy to the role by running this command in the Cloud9 terminal. You'll need to change the <strong>--policy-arn</strong> attribute to the **Arn value you noted in the previous step. For example, for the output above, we'd run:</p>
-<pre class="console"><code>aws iam attach-role-policy --role-name WorkshopAppRole --policy-arn arn:aws:iam::123456789012:policy/WorkshopAppPolicy</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button></li>
 </ol>
 <h4 id="create-the-task-definition">2. Create the Task Definition</h4>
 <p>Task definitions are blueprints for your application. They include details about what containers to run, their resource requirements, environment settings, networking configuration, and task role permission settings. In this step, we'll create a task definition for our application. Complete either the directions using the AWS Management Console or the AWS Command Line Interface.</p>
@@ -177,8 +102,8 @@ Copy to Clipboard
 <li><p>Click <strong>Add container</strong>.</p></li>
 <li><p>Enter <code>workshop</code> into <strong>Container name</strong>.</p></li>
 <li><p>In <strong>Image</strong>, paste the repository URI for the Docker image you built and pushed in the previous module. For example, if your Account ID was 123456789012, then you'd enter: <code>123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code></p></li>
-<li><p>Enter <code>8080</code> into <strong>Container port</strong> and select <strong>tcp</strong> from <strong>Protocol</strong> in <strong>Port mappings</strong>.</p></li>
-<li><p>Click <strong>Update</strong>.</p></li>
+<li><p>Enter <code>80</code> into <strong>Container port</strong> and select <strong>tcp</strong> from <strong>Protocol</strong> in <strong>Port mappings</strong>.</p></li>
+<li><p>Click <strong>Add</strong>.</p></li>
 <li><p>Click <strong>Create</strong>.</p></li>
 </ol>
 <p><strong>✅ Step-by-step Instructions (AWS CLI)</strong></p>
@@ -210,7 +135,7 @@ Copy to Clipboard
       <span class="dt">&quot;portMappings&quot;</span><span class="fu">:</span> <span class="ot">[</span>
         <span class="fu">{</span>
           <span class="dt">&quot;protocol&quot;</span><span class="fu">:</span> <span class="st">&quot;tcp&quot;</span><span class="fu">,</span>
-          <span class="dt">&quot;containerPort&quot;</span><span class="fu">:</span> <span class="dv">8080</span>
+          <span class="dt">&quot;containerPort&quot;</span><span class="fu">:</span> <span class="dv">80</span>
         <span class="fu">}</span>
       <span class="ot">]</span>
     <span class="fu">}</span>
@@ -229,7 +154,7 @@ Copy to Clipboard
 </button></li>
 </ol>
 <h4 id="create-an-application-load-balancer">3. Create an Application Load Balancer</h4>
-<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<p><strong>✅ Step-by-step Instructions</strong></p>
 <ol style="list-style-type: decimal">
 <li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>EC2</strong> under Compute.</p></li>
 <li><p>Click on <strong>Load Balancers</strong> in the left-hand navigation.</p></li>
@@ -251,7 +176,7 @@ Copy to Clipboard
 <ol style="list-style-type: decimal">
 <li><p>Run the following command in your Cloud9 terminal:</p>
 <pre class="console"><code>aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
-                      --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
+  --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
 <button class="btn btn-outline-primary copy">
 Copy to Clipboard
 </button></li>
@@ -259,71 +184,62 @@ Copy to Clipboard
 <li><p>Select all <strong>Availability Zones</strong> configured for the VPC by checking each checkbox.</p></li>
 <li><p>Click <strong>Next: Configure Security Settings</strong>.</p></li>
 <li><p>The wizard will warn you that you've not established a secure listener as we didn't define an HTTPS listener. Click <strong>Next: Configure Security Groups</strong>.</p></li>
-<li><p>Check the security group the is prefixed with <strong>EC2ContainerService-workshop</strong>. This security group will permit HTTP traffic to ingress to the load balancer.</p></li>
+<li><p>Tick the <strong>Create a new security group</strong> radio button. This will create a new security group which will permit traffic to port 80 by default.</p></li>
 <li><p>Click <strong>Next: Configure Routing</strong>.</p></li>
 <li><p>Enter <code>workshop</code> into <strong>Name</strong>.</p></li>
-<li><p>Enter <code>8080</code> into <strong>Port</strong>.</p></li>
+<li><p>Enter <code>80</code> into <strong>Port</strong>.</p></li>
 <li><p>Select <strong>ip</strong> from <strong>Target type</strong>.</p></li>
 <li><p>Click <strong>Next: Register Targets</strong>. We won't register anything as we'll rely on Amazon ECS to manage our Target Group for us.</p></li>
 <li><p>Click <strong>Next: Review</strong>. Review the details you configured, then click <strong>Create</strong>.</p></li>
-</ol>
-<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
-<ol style="list-style-type: decimal">
-<li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
-<li><p>Find the subnets created for your ECS cluster via the first run wizard by running this command in your Cloud9 terminal:</p>
-<pre class="console"><code>aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
-                         --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button>
-<p>Note these subnet IDs for use later in this module.</p></li>
-<li><p>Find the security group created for your sample application via the first run wizard by running this command in your Cloud9 terminal:</p>
-<pre class="console"><code>aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
-                                 --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button>
-<p>Note this security group ID for use later in this module.</p></li>
-<li><p>Create an Application Load Balancer via the AWS CLI in your Cloud9 terminal. You'll need the security group and subnet IDs from the previous two steps:</p>
-<pre class="console"><code>aws elbv2 create-load-balancer --name workshop --subnets subnet-SUBNET_ID_1_HERE subnet-SUBNET_ID_2_HERE --security-groups sg-SECURITY_GROUP_ID_HERE</code></pre>
-<button class="btn btn-outline-primary copy">
-Copy to Clipboard
-</button>
-<p>The command will return information about the new Application Load Balancer:</p>
-<div class="sourceCode"><pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
-    <span class="dt">&quot;LoadBalancers&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-        <span class="fu">{</span>
-            <span class="dt">&quot;IpAddressType&quot;</span><span class="fu">:</span> <span class="st">&quot;ipv4&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;VpcId&quot;</span><span class="fu">:</span> <span class="st">&quot;vpc-abcd1234&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;LoadBalancerArn&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/workshop1/ed108c3680cfe3df&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;State&quot;</span><span class="fu">:</span> <span class="fu">{</span>
-                <span class="dt">&quot;Code&quot;</span><span class="fu">:</span> <span class="st">&quot;provisioning&quot;</span>
-            <span class="fu">},</span>
-            <span class="dt">&quot;DNSName&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop1-1971146816.us-east-1.elb.amazonaws.com&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;SecurityGroups&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-                <span class="st">&quot;sg-abcd1234&quot;</span>
-            <span class="ot">]</span><span class="fu">,</span>
-            <span class="dt">&quot;LoadBalancerName&quot;</span><span class="fu">:</span> <span class="st">&quot;workshop&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;CreatedTime&quot;</span><span class="fu">:</span> <span class="st">&quot;2018-01-08T04:09:37.770Z&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;Scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;internet-facing&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;application&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;CanonicalHostedZoneId&quot;</span><span class="fu">:</span> <span class="st">&quot;Z35SXDOTRQ7X7K&quot;</span><span class="fu">,</span>
-            <span class="dt">&quot;AvailabilityZones&quot;</span><span class="fu">:</span> <span class="ot">[</span>
-                <span class="fu">{</span>
-                    <span class="dt">&quot;SubnetId&quot;</span><span class="fu">:</span> <span class="st">&quot;subnet-abcd1234&quot;</span><span class="fu">,</span>
-                    <span class="dt">&quot;ZoneName&quot;</span><span class="fu">:</span> <span class="st">&quot;us-east-1d&quot;</span>
-                <span class="fu">}</span><span class="ot">,</span>
-                <span class="fu">{</span>
-                    <span class="dt">&quot;SubnetId&quot;</span><span class="fu">:</span> <span class="st">&quot;subnet-1234abcd&quot;</span><span class="fu">,</span>
-                    <span class="dt">&quot;ZoneName&quot;</span><span class="fu">:</span> <span class="st">&quot;us-east-1c&quot;</span>
-                <span class="fu">}</span>
-            <span class="ot">]</span>
-        <span class="fu">}</span>
-    <span class="ot">]</span>
-<span class="fu">}</span></code></pre></div>
-<p>Note the <strong>LoadBalancerArn</strong> for use later in this module.</p></li>
+<li><p>Click on the <strong>workshop</strong> link to view details about the new load balancer.</p>
+<div class="figure">
+<img src="images/create-a-service/load-balancer-confirmation.png" />
+
+</div></li>
+<li><p>Click on the <strong>workshop</strong> link to view details about the new load balancer.</p>
+<div class="figure">
+<img src="images/create-a-service/load-balancer-details.png" />
+
+</div>
+<p>Take note of the <strong>DNSName</strong>. This will be the hostname of our load balancer that we'll use to hit our service after we complete the next set of steps.</p></li>
 </ol>
 <h4 id="create-the-service">4. Create the Service</h4>
+<p>Services maintain a desired number of tasks and manage registration of those tasks with a load balancer. In this section, we'll create a new service for our Docker container.</p>
+<p><strong>✅ Step-by-step Instructions (AWS Management Console)</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Go to the AWS Management Console, click <strong>Services</strong> then select <strong>Elastic Container Service</strong> under Compute.</p></li>
+<li><p>Click <strong>workshop</strong> in the cluster list.</p></li>
+<li><p>The <strong>Services</strong> tab should be selected. Click <strong>Create</strong>.</p></li>
+<li><p>Tick the <strong>FARGATE</strong> radio button in <strong>Launch Type</strong>.</p></li>
+<li><p>Select <strong>workshop:1</strong> from <strong>Task Definition</strong>.</p></li>
+<li><p>Enter <code>workshop</code> into <strong>Service name</strong>.</p></li>
+<li><p>Enter <code>1</code> into <strong>Number of tasks</strong>.</p></li>
+<li><p>Click <strong>Next step</strong>.</p></li>
+<li><p>Select the <strong>VPC</strong> created in the first module when you created the ECS cluster in the first module. If you need to find the VPC ID do one of the following:</p>
+<p><strong>AWS Management Console</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Click on <strong>Services</strong>, right-click on <strong>VPC</strong> under Networking &amp; Content Delivery and click <strong>Open Link in New Tab</strong>.</p></li>
+<li><p>Click on <strong>Your VPCs</strong> in the left-hand navigation.</p></li>
+<li><p>Click on each VPC, and click on its <strong>Tags</strong> tab. The VPC you're looking for has a tag with <strong>Key</strong> <code>aws:cloudformation:stack-name</code> and <strong>Value</strong> <code>EC2ContainerService-workshop</code></p></li>
+</ol>
+<p><strong>AWS CLI</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Run the following command in your Cloud9 terminal:</p>
+<pre class="console"><code>aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
+  --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop</code></pre>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
+</ol></li>
+<li><p>Select both subnets in <strong>Subnets</strong>.</p></li>
+<li><p>Under <strong>Load Balancing</strong>, tick the <strong>Application Load Balancer</strong> radio button.</p></li>
+<li></li>
+</ol>
+<h3 id="recap">⭐ Recap</h3>
+<p>🔑</p>
+<p>🛠️</p>
+<h3 id="next">Next</h3>
+<p>✅</p>
 
 </div>
 <div class='col-3 d-none d-lg-block d-xl-block'>

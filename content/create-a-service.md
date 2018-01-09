@@ -8,9 +8,6 @@ uses to store quotations.  We'll also need to create an Application Load
 Balancer to distribute traffic across the running tasks that are being ran by
 the service.
 
-This module provides instructions for creating the service in both the AWS
-Management Console and the AWS Command Line Interface.
-
 ### Implementation
 
 #### 1. Create the Task Role
@@ -19,7 +16,7 @@ Task roles are IAM roles that can be used by the containers in the task. For our
 application, we need to grant permission to read from and write to the Amazon
 DynamoDB table we created in the last module.
 
-**✅ Step-by-step Instructions (AWS Management Console)**
+**✅ Step-by-step Instruction**
 
 1. Go to the AWS Management Console, click **Services** then select **IAM**
    under Security, Identity & Compliance.
@@ -30,7 +27,9 @@ DynamoDB table we created in the last module.
 
 1. First, we'll configure which AWS service can assume this role. Click
    **Elastic Container Service** from the **Choose the service that will use this
-   role** list. Next, choose **Elastic Container Service Task** from **Select
+   role** list.
+
+1. Next, choose **Elastic Container Service Task** from **Select
    your use case**.
 
 1. Click **Next: Permissions**.
@@ -38,6 +37,8 @@ DynamoDB table we created in the last module.
 1. Click **Create policy**. The visual policy editor will open in a new tab.
 
 1. Click on **Choose a service** and click **DynamoDB**.
+
+1. Click on **Actions**.
 
 1. Expand the **Read** permissions and check the **Scan** and **GetItem**
    checkboxes.
@@ -89,125 +90,13 @@ DynamoDB table we created in the last module.
 
 1. Return to the original tab where you were creating the role. Click
    **Refresh** and type `WorkshopAppPolicy` in the **Filter** textbox. Check the
-   **WorkshopAppPolicy* checkbox. Click **Next: Review**.
+   **WorkshopAppPolicy** checkbox. Click **Next: Review**.
 
 1. Enter `WorkshopAppRole` in **Role name**.
 
     ![](images/create-a-service/review-role.png)
 
 1. Click **Create role**.
-
-**✅ Step-by-step Instructions (AWS CLI)**
-
-1. Switch to the tab where you have your Cloud9 environment opened.
-
-1. Create a new IAM role called `WorkshopAppRole` by running this command in the
-   Cloud9 terminal:
-
-    ```console
-    aws iam create-role --role-name WorkshopAppRole --assume-role-policy-document file://iam/WorkshopAppAssumeRolePolicy.json
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
-
-    This creates a role and allows an ECS task to assume that role. Navigate to
-    `fargate-workshop-app/iam/WorkshopAppAssumeRolePolicy.json` to see the
-    assume role policy document we're assigning to the new role.
-
-    The command will return information about the newly created role:
-
-    ```console
-    Admin:~/environment/fargate-workshop-app (master) $ aws iam create-role --role-name WorkshopAppRole --assume-role-policy-document file://iam/WorkshopAppAssumeRolePolicy.json
-    ```
-    ```json
-    {
-        "Role": {
-            "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Action": "sts:AssumeRole",
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": "ecs-tasks.amazonaws.com"
-                        }
-                    }
-                ]
-            },
-            "RoleId": "AROAJD4AD2SWV6AZAIVN4",
-            "CreateDate": "2018-01-07T18:09:03.866Z",
-            "RoleName": "WorkshopAppRole",
-            "Path": "/",
-            "Arn": "arn:aws:iam::123456789012:role/WorkshopAppRolet"
-        }
-    }
-    ```
-
-
-1. Open the file `fargate-workshop-app/iam/WorkshopAppPolicy.json` by navigating
-   to it in the environment tree and double clicking the filename.
-
-1. The file has the following contents:
-
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "dynamodb:PutItem",
-                    "dynamodb:GetItem",
-                    "dynamodb:Scan"
-                ],
-                "Resource": "arn:aws:dynamodb:us-east-1:YOUR_ACCOUNT_ID_HERE:table/quotes"
-            }
-        ]
-    }
-    ```
-
-    Replace the **YOUR_ACCOUNT_ID_HERE** placeholder with your [Account
-    ID][find-account-id]. Save the file by going to **File** and selecting
-    **Save** in the menu bar, or pressing **⌘-S** (macOS) / **Ctrl-S**
-    (Windows).
-
-1. Create the IAM policy by running this command in the Cloud9 terminal:
-
-    ```console
-    aws iam create-policy --role-name WorkshopAppPolicy --policy-document file://iam/WorkshopAppPolicy.json
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
-
-    The command will return details about the newly created policy:
-
-    ```console
-    Admin:~/environment/fargate-workshop-app (master) $ aws iam create-policy --role-name WorkshopAppPolicy --policy-document file://iam/WorkshopAppPolicy.json
-    ```
-    ```json
-    {
-        "Policy": {
-            "PolicyName": "WorkshopAppPolicy",
-            "CreateDate": "2018-01-07T18:12:00.829Z",
-            "AttachmentCount": 0,
-            "IsAttachable": true,
-            "PolicyId": "ANPAIITP5ALYCNFCXUTDA",
-            "DefaultVersionId": "v1",
-            "Path": "/",
-            "Arn": "arn:aws:iam::123456789012:policy/WorkshopAppPolicy",
-            "UpdateDate": "2018-01-07T18:12:00.829Z"
-        }
-    }
-    ```
-
-    Note the policy's **Arn** above for use in the next step.
-
-3. Attach the policy to the role by running this command in the Cloud9 terminal.
-   You'll need to change the **--policy-arn** attribute to the **Arn value you
-   noted in the previous step. For example, for the output above, we'd run:
-
-    ```console
-    aws iam attach-role-policy --role-name WorkshopAppRole --policy-arn arn:aws:iam::123456789012:policy/WorkshopAppPolicy
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 #### 2. Create the Task Definition
 
@@ -249,10 +138,10 @@ using the AWS Management Console or the AWS Command Line Interface.
    123456789012, then you'd enter:
    `123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop`
 
-1. Enter `8080` into **Container port** and select **tcp** from **Protocol** in
+1. Enter `80` into **Container port** and select **tcp** from **Protocol** in
    **Port mappings**.
 
-1. Click **Update**.
+1. Click **Add**.
 
 1. Click **Create**.
 
@@ -290,7 +179,7 @@ using the AWS Management Console or the AWS Command Line Interface.
           "portMappings": [
             {
               "protocol": "tcp",
-              "containerPort": 8080
+              "containerPort": 80
             }
           ]
         }
@@ -320,7 +209,7 @@ using the AWS Management Console or the AWS Command Line Interface.
 
 #### 3. Create an Application Load Balancer
 
-**✅ Step-by-step Instructions (AWS Management Console)**
+**✅ Step-by-step Instructions**
 
 1. Go to the AWS Management Console, click **Services** then select **EC2**
    under Compute.
@@ -356,7 +245,7 @@ using the AWS Management Console or the AWS Command Line Interface.
 
         ```console
         aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
-                              --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
+          --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
         ```
         <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -369,15 +258,14 @@ using the AWS Management Console or the AWS Command Line Interface.
    we didn't define an HTTPS listener. Click **Next: Configure Security
    Groups**.
 
-1. Check the security group the is prefixed with
-   **EC2ContainerService-workshop**. This security group will permit HTTP
-   traffic to ingress to the load balancer.
+1. Tick the **Create a new security group** radio button. This will create a new
+   security group which will permit traffic to port 80 by default.
 
 1. Click **Next: Configure Routing**.
 
 1. Enter `workshop` into **Name**.
 
-1. Enter `8080` into **Port**.
+1. Enter `80` into **Port**.
 
 1. Select **ip** from **Target type**.
 
@@ -387,80 +275,82 @@ using the AWS Management Console or the AWS Command Line Interface.
 1. Click **Next: Review**. Review the details you configured, then click
    **Create**.
 
-**✅ Step-by-step Instructions (AWS Management Console)**
+1. Click on the **workshop** link to view details about the new load balancer.
 
-1. Switch to the tab where you have your Cloud9 environment opened.
+    ![](images/create-a-service/load-balancer-confirmation.png)
 
-1. Find the subnets created for your ECS cluster via the first run wizard by running
-   this command in your Cloud9 terminal:
+1. Click on the **workshop** link to view details about the new load balancer.
 
-    ```console
-    aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
-                             --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+    ![](images/create-a-service/load-balancer-details.png)
 
-    Note these subnet IDs for use later in this module.
-
-1. Find the security group created for your sample application via the first
-   run wizard by running this command in your Cloud9 terminal:
-
-    ```console
-    aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
-                                     --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
-
-    Note this security group ID for use later in this module.
-
-1. Create an Application Load Balancer via the AWS CLI in your Cloud9 terminal.
-   You'll need the security group and subnet IDs from the previous two steps:
-
-    ```console
-    aws elbv2 create-load-balancer --name workshop --subnets subnet-SUBNET_ID_1_HERE subnet-SUBNET_ID_2_HERE --security-groups sg-SECURITY_GROUP_ID_HERE
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
-
-    The command will return information about the new Application Load Balancer:
-
-    ```json
-    {
-        "LoadBalancers": [
-            {
-                "IpAddressType": "ipv4",
-                "VpcId": "vpc-abcd1234",
-                "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/workshop1/ed108c3680cfe3df",
-                "State": {
-                    "Code": "provisioning"
-                },
-                "DNSName": "workshop1-1971146816.us-east-1.elb.amazonaws.com",
-                "SecurityGroups": [
-                    "sg-abcd1234"
-                ],
-                "LoadBalancerName": "workshop",
-                "CreatedTime": "2018-01-08T04:09:37.770Z",
-                "Scheme": "internet-facing",
-                "Type": "application",
-                "CanonicalHostedZoneId": "Z35SXDOTRQ7X7K",
-                "AvailabilityZones": [
-                    {
-                        "SubnetId": "subnet-abcd1234",
-                        "ZoneName": "us-east-1d"
-                    },
-                    {
-                        "SubnetId": "subnet-1234abcd",
-                        "ZoneName": "us-east-1c"
-                    }
-                ]
-            }
-        ]
-    }
-    ```
-
-    Note the **LoadBalancerArn** for use later in this module.
-
+    Take note of the **DNSName**. This will be the hostname of our load balancer
+    that we'll use to hit our service after we complete the next set of steps.
 
 #### 4. Create the Service
 
+Services maintain a desired number of tasks and manage registration of those
+tasks with a load balancer. In this section, we'll create a new service for our
+Docker container.
+
+**✅ Step-by-step Instructions (AWS Management Console)**
+
+1. Go to the AWS Management Console, click **Services** then select **Elastic
+   Container Service** under Compute.
+
+1. Click **workshop** in the cluster list.
+
+1. The **Services** tab should be selected. Click **Create**.
+
+1. Tick the **FARGATE** radio button in **Launch Type**.
+
+1. Select **workshop:1** from **Task Definition**.
+
+1. Enter `workshop` into **Service name**.
+
+1. Enter `1` into **Number of tasks**.
+
+1. Click **Next step**.
+
+1. Select the **VPC** created in the first module when you created the ECS
+   cluster in the first module. If you need to find the VPC ID do one of the
+   following:
+
+    **AWS Management Console**
+
+    1. Click on **Services**, right-click on **VPC** under Networking &
+       Content Delivery and click **Open Link in New Tab**.
+
+    1. Click on **Your VPCs** in the left-hand navigation.
+
+    1. Click on each VPC, and click on its **Tags** tab. The VPC you're
+       looking for has a tag with **Key** `aws:cloudformation:stack-name` and
+       **Value** `EC2ContainerService-workshop`
+
+    **AWS CLI**
+
+    1. Run the following command in your Cloud9 terminal:
+
+        ```console
+        aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
+          --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
+        ```
+        <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. Select both subnets in **Subnets**.
+
+1. Under **Load Balancing**, tick the **Application Load Balancer** radio
+   button.
+
+1. 
+
+### ⭐ Recap
+
+🔑
+
+🛠️
+
+### Next
+
+✅ 
 
 [find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html

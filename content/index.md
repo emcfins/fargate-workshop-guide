@@ -11,7 +11,7 @@ Container Service (Amazon ECS)][ecs] to orchestrate our containers on top of
 store our Docker container images, and [AWS Cloud9][cloud9] to drive our
 development and deployment. In the last module, we'll use [AWS
 CodeCommit][codecommit], [AWS CodePipeline][codepipeline], and [AWS
-CodeBuild][codebuild] to create a continuous delivery pipeline to automatically
+CodeBuild][codebuild] to create a continuous deployment pipeline to automatically
 deploy changes to our application to Amazon ECS.
 
 ### Modules
@@ -30,11 +30,14 @@ The modules build on each other and are intended to be executed linearly.
 | [Getting Started with Amazon ECS using AWS Fargate][getting-started] | Create a new Amazon ECS cluster using the AWS Management Console. At the end of this module, we'll have a new ECS cluster and supporting infrastructure such as a VPC and subnets and a small Hello World application running. |
 | [Create a Docker Image Repository][create-docker-image-repository] | Create a new Docker registry repository for workshop images in Amazon ECR. |
 | [Build and Push a Docker Image][build-push-image] | Fork a sample application from GitHub which uses an Amazon DynamoDB table to store notable quotations and build it as a Docker container image and push it to your new Docker image repository. |
-| | |
+| [Create a Service][create-a-service] | Configure a task definition, create a load balancer, and create a service to run our Docker container image. |
+| [Build a Continuous Deployment Pipeline][build-a-continuous-deployment-pipeline] | Using AWS developer tools, create a pipeline to automatically deploy changes committed to a source repository to the ECS service. |
 
 ### Next
 
-✅ Review and follow the directions in the [Setup guide][setup]
+✅ Review and follow the directions in the [setup guide][setup], wherein we'll
+configure our AWS Cloud9 IDE and discuss pre-requisites like Region selection
+and AWS Account setup.
 
 [ecs]: http://aws.amazon.com/ecs/
 [ecr]: http://aws.amazon.com/ecr/
@@ -47,3 +50,5 @@ The modules build on each other and are intended to be executed linearly.
 [getting-started]: getting-started-with-amazon-ecs-using-aws-fargate.html
 [create-docker-image-repository]: create-a-docker-image-repository.html
 [build-push-image]: build-and-push-a-docker-image.html
+[create-a-service]: create-a-service.html
+[build-a-continuous-deployment-pipeline]: build-a-continuous-deployment-pipeline.html

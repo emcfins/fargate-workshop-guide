@@ -21,7 +21,7 @@
 <h2 id="welcome">Welcome!</h2>
 <p>Welcome to the <em>Running Containers on AWS Fargate</em> workshop!</p>
 <p>This is a 200-level workshop designed to illustrate how to deploy containerized applications to AWS without managing clusters or provisioning servers.</p>
-<p>In this workshop, we're going deploy applications using <a href="http://aws.amazon.com/ecs/">Amazon Elastic Container Service (Amazon ECS)</a> to orchestrate our containers on top of <a href="http://aws.amazon.com/fargate/">AWS Fargate</a>, <a href="http://aws.amazon.com/ecr/">Amazon Elastic Container Registry (Amazon ECR)</a> to store our Docker container images, and <a href="http://aws.amazon.com/cloud9/">AWS Cloud9</a> to drive our development and deployment. In the last module, we'll use <a href="http://aws.amazon.com/codecommit/">AWS CodeCommit</a>, <a href="http://aws.amazon.com/codepipeline/">AWS CodePipeline</a>, and <a href="http://aws.amazon.com/codebuild/">AWS CodeBuild</a> to create a continuous delivery pipeline to automatically deploy changes to our application to Amazon ECS.</p>
+<p>In this workshop, we're going deploy applications using <a href="http://aws.amazon.com/ecs/">Amazon Elastic Container Service (Amazon ECS)</a> to orchestrate our containers on top of <a href="http://aws.amazon.com/fargate/">AWS Fargate</a>, <a href="http://aws.amazon.com/ecr/">Amazon Elastic Container Registry (Amazon ECR)</a> to store our Docker container images, and <a href="http://aws.amazon.com/cloud9/">AWS Cloud9</a> to drive our development and deployment. In the last module, we'll use <a href="http://aws.amazon.com/codecommit/">AWS CodeCommit</a>, <a href="http://aws.amazon.com/codepipeline/">AWS CodePipeline</a>, and <a href="http://aws.amazon.com/codebuild/">AWS CodeBuild</a> to create a continuous deployment pipeline to automatically deploy changes to our application to Amazon ECS.</p>
 <h3 id="modules">Modules</h3>
 <p>This workshop is divided into individual modules. Each module describes a scenario of what to build within that module. The modules include step-by-step directions to help you implement the architecture and verify your work. Some modules may contain instructions for both the AWS Management Console and the AWS Command Line Interface giving you the option to choose either to complete the task.</p>
 <p>The modules build on each other and are intended to be executed linearly.</p>
@@ -50,13 +50,17 @@
 <td>Fork a sample application from GitHub which uses an Amazon DynamoDB table to store notable quotations and build it as a Docker container image and push it to your new Docker image repository.</td>
 </tr>
 <tr class="even">
-<td></td>
-<td></td>
+<td><a href="create-a-service.html">Create a Service</a></td>
+<td>Configure a task definition, create a load balancer, and create a service to run our Docker container image.</td>
+</tr>
+<tr class="odd">
+<td><a href="build-a-continuous-deployment-pipeline.html">Build a Continuous Deployment Pipeline</a></td>
+<td>Using AWS developer tools, create a pipeline to automatically deploy changes committed to a source repository to the ECS service.</td>
 </tr>
 </tbody>
 </table>
 <h3 id="next">Next</h3>
-<p>✅ Review and follow the directions in the <a href="setup.html">Setup guide</a></p>
+<p>✅ Review and follow the directions in the <a href="setup.html">setup guide</a>, wherein we'll configure our AWS Cloud9 IDE and discuss pre-requisites like Region selection and AWS Account setup.</p>
 
 </div>
 <div class='col-3 d-none d-lg-block d-xl-block'>

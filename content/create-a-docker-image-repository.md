@@ -25,17 +25,18 @@ URI** of the repository.
 
 1. Click **Repositories** in the left-hand navigation.
 
-1. Click **Create repository**.
+1. Click **Get started** if this is your first visit to the Amazon ECR console,
+   or **Create repository** if you've used it before.
 
 1. Enter `workshop` into **Repository name**.
 
 1. Note the contents of the **Repository URI** field.
 
-![](images/repository-create-form.png)
+    ![](images/repository-create-form.png)
 
 1. Click **Next step**. Your repository has been created.
 
-![](images/repository-created.png)
+    ![](images/repository-created.png)
 
 **✅ Step-by-step Instructions (AWS CLI)**
 
@@ -70,3 +71,11 @@ scaling the underlying infrastructure.
 🛠️`You created a Docker image repository in Amazon ECR. The repository has a URI
 which you've noted for use in the coming modules.
 
+### Next
+
+✅  Proceed to the next module, [Build and Push a Docker
+Image][build-and-push-a-docker-image], wherein we'll clone a sample application
+from GitHub, build a Docker container from it, and push that into our new
+repository in Amazon ECR.
+
+[build-and-push-a-docker-image]: build-and-push-a-docker-image.html

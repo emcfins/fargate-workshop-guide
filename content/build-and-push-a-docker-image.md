@@ -64,7 +64,7 @@ tag of your repository from the repository URI you noted in the previous module.
 
     WORKDIR /app                # Set the working directory for future commands
 
-    EXPOSE 8080                 # Indicates that our container will listen on TCP 8080
+    EXPOSE 80                 # Indicates that our container will listen on TCP 80
 
     ADD index.js /app           # Add index.js and package.json to
     ADD package.json /app       #    the /app directory
@@ -131,7 +131,7 @@ tag of your repository from the repository URI you noted in the previous module.
 Create a DynamoDB table called `quotes` that has a primary key called `ID` which
 is a string.
 
-**✅ Step-by-step Instructions (AWS Management Console)**
+**✅ Step-by-step Instructions**
 
 1. Go to the AWS Management Console, click **Services** then select **DynamoDB**
    under Database.
@@ -145,54 +145,6 @@ is a string.
 
 1. Click **Create**.
 
-**✅ Step-by-step Instructions (AWS CLI)**
-
-1. Switch to the tab where you have your Cloud9 environment opened.
-
-1. In the Cloud9 terminal, run:
-
-    ```console
-    aws dynamodb create-table --table-name quotes \
-             --attribute-definitions AttributeName=ID,AttributeType=S \
-             --key-schema AttributeName=ID,KeyType=HASH \
-             --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
-    ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
-
-1. Verify the table was successfully created by comparing the command's output
-   with the below.
-
-    ```json
-    {
-      "TableDescription": {
-        "TableArn": "arn:aws:dynamodb:us-east-1:123456789012:table/quotes",
-        "AttributeDefinitions": [
-          {
-            "AttributeName": "ID",
-            "AttributeType": "S"
-          }
-        ],
-        "ProvisionedThroughput": {
-          "NumberOfDecreasesToday": 0,
-          "WriteCapacityUnits": 5,
-          "ReadCapacityUnits": 5
-        },
-        "TableSizeBytes": 0,
-        "TableName": "quotes",
-        "TableStatus": "CREATING",
-        "TableId": "072f2361-12d8-4af7-b2e0-aa44b0337abe",
-        "KeySchema": [
-          {
-            "KeyType": "HASH",
-            "AttributeName": "ID"
-          }
-        ],
-        "ItemCount": 0,
-        "CreationDateTime": 1515209588.37
-      }
-    }
-    ```
-
 #### 3. Test the Docker Image
 
 Run a Docker container in your Cloud9 environment and experiment with it using
@@ -205,11 +157,10 @@ Run a Docker container in your Cloud9 environment and experiment with it using
 1. Install `jq` for JSON pretty printing.
 
     To aid in our testing, install `jq` which is a command line JSON processor.
-    Install it by running `sudo yum update -y && sudo yum install -y jq` in the
-    Cloud9 terminal.
+    Install it by running `sudo yum install -y jq` in the Cloud9 terminal.
 
     ```console
-    sudo yum update -y && sudo yum install -y jq
+    sudo yum install -y jq
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -217,9 +168,8 @@ Run a Docker container in your Cloud9 environment and experiment with it using
    using the Docker image we built in step 1:
 
     ```console
-    docker run --publish 8080 --volume $HOME/.aws:/root/.aws \
-               --env AWS_REGION=us-east-1 --detach \
-               123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
+    docker run --detach --publish 80:80 --volume $HOME/.aws:/root/.aws \
+      123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -229,16 +179,15 @@ Run a Docker container in your Cloud9 environment and experiment with it using
 
     | Argument | Description |
     | ----------------------------------- | --------------------------------------------------- |
-    | --publish 8080:8080 | Expose the container port 8080 on the host. This will allow us to connect to 127.0.0.1:8080 and that traffic will be forwarded to our application running in the container. |
+    | --publish 80:80 | Expose the container port 80 on the host. This will allow us to connect to 127.0.0.1:80 and that traffic will be forwarded to our application running in the container. |
     | --volume $HOME/.aws:/root/.aws | Mount our AWS configuration onto the container. This gives our application access to our AWS credentials for use in testing. |
-    | --env AWS_REGION=us-east-1 | Set the AWS_REGION environment variable for the AWS JavaScript SDK. |
     | --detach | Run the container in the background to allow us to use the terminal to run other commands. |
     | 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop | The docker image to run. Replace this parameter with the tag you used in step 1. |
 
 1. Test the application using `curl`:
 
     ```console
-    curl -Ss http://127.0.0.1:8080/ | jq
+    curl -Ss http://127.0.0.1/ | jq
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -246,7 +195,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     which will match the container ID you saw after running the previous step:
 
     ```console
-    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1:8080/ | jq
+    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/ | jq
     ```
     ```json
     {
@@ -257,14 +206,14 @@ Run a Docker container in your Cloud9 environment and experiment with it using
 1. Next, hit the quotes index endpoint to list all quotes in the database.
 
     ```console
-    curl -Ss http://127.0.0.1:8080/quotes | jq
+    curl -Ss http://127.0.0.1/quotes | jq
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     As we haven't added any quotes yet, we'll see an empty array:
 
     ```console
-    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1:8080/quotes | jq
+    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/quotes | jq
     ```
     ```json
     []
@@ -273,7 +222,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
 1. Add a quote to the database:
 
     ```console
-    curl -Ss http://127.0.0.1:8080/quotes -X PUT -H "Content-Type: application/json" -d '{"Text":"There are no passengers on spaceship earth. We are all crew.","AttributedTo":"Marshall McLuhan"}'
+    curl -Ss http://127.0.0.1/quotes -X PUT -H "Content-Type: application/json" -d '{"Text":"There are no passengers on spaceship earth. We are all crew.","AttributedTo":"Marshall McLuhan"}'
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -290,14 +239,14 @@ Run a Docker container in your Cloud9 environment and experiment with it using
    the quote has been added:
 
     ```console
-    curl -Ss http://127.0.0.1:8080/quotes | jq
+    curl -Ss http://127.0.0.1/quotes | jq
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     The output will resemble this, with a different UUID:
 
     ```console
-    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1:8080/quotes | jq
+    Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/quotes | jq
     ```
     ```json
     [
@@ -334,7 +283,7 @@ Log into your Amazon ECR registry and push the Docker image into its repository.
    in step 1:
 
     ```console
-    docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop .
+    docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
     ```
     <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
@@ -368,3 +317,11 @@ Repository](#create-a-docker-image-repository).
 
 🛠️ You created a DynamoDB table named `quotes` to store data for our sample
 application.
+
+### Next
+
+✅  Proceed to the next module, [Create a Service][create-a-service], wherein we
+will configure a task definition and its IAM role, create a load balancer, and
+create a new ECS service for this Docker container
+
+[create-a-service]: create-a-service.html
