@@ -64,7 +64,9 @@ tag of your repository from the repository URI you noted in the previous module.
 
     WORKDIR /app                # Set the working directory for future commands
 
-    EXPOSE 80                 # Indicates that our container will listen on TCP 80
+    ENV PORT=80                 # Set an environment variable in the container
+
+    EXPOSE 80                   # Indicates that our container will listen on TCP 80
 
     ADD index.js /app           # Add index.js and package.json to
     ADD package.json /app       #    the /app directory
@@ -179,9 +181,9 @@ Run a Docker container in your Cloud9 environment and experiment with it using
 
     | Argument | Description |
     | ----------------------------------- | --------------------------------------------------- |
+    | --detach | Run the container in the background to allow us to use the terminal to run other commands. |
     | --publish 80:80 | Expose the container port 80 on the host. This will allow us to connect to 127.0.0.1:80 and that traffic will be forwarded to our application running in the container. |
     | --volume $HOME/.aws:/root/.aws | Mount our AWS configuration onto the container. This gives our application access to our AWS credentials for use in testing. |
-    | --detach | Run the container in the background to allow us to use the terminal to run other commands. |
     | 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop | The docker image to run. Replace this parameter with the tag you used in step 1. |
 
 1. Test the application using `curl`:

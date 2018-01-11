@@ -9,8 +9,8 @@ CodeBuild** to build and push our Docker container.
 Our pipeline has three stages. In the **Source** stage, the pipeline downloads
 the latest revision from CodeCommit. In **Build** stage, the pipeline triggers a
 CodeBuild build to assemble a new Docker container image and push it to Amazon
-ECR. In the process, it will generate a JSON file defining the new Docker
-image tag and which container should be update. CodePipeline will use that
+ECR. In the process, it will generate a JSON file defining the new Docker image
+tag and which container should be update. CodePipeline will use that
 configuration in the **Deploy** stage to replace the container's image URL
 within our service.
 

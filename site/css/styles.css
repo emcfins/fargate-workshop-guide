@@ -90,8 +90,7 @@ table tr:nth-child(2n) {
 }
 
 #guide img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
     border: 2px solid #eee;
     padding: 5px;
     margin-bottom: 16px;
