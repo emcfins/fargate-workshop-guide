@@ -120,7 +120,8 @@ git config --global credential.UseHttpPath true</code></pre>
 <li><p>Select <strong>Docker</strong> from <strong>Runtime</strong>.</p></li>
 <li><p>Select <strong>aws/codebuild/docker:17.09.0</strong> from <strong>Version</strong>.</p></li>
 <li><p>Tick the <strong>Choose an existing service role from your account</strong> under <strong>AWS CodeBuild service role</strong>.</p></li>
-<li><p>Enter <code>WorkshopBuildRole</code> in <strong>Role name</strong>.</p></li>
+<li><p>Enter <code>WorkshopBuildRole</code> in <strong>Role name</strong>.</p>
+<p><img src="images/build-a-continuous-deployment-pipeline/service-role.png" /></p></li>
 <li><p>Extend <strong>Advanced Settings</strong>. Create an <strong>Environment Variable</strong> for the Amazon ECR repository URI. Enter <code>REPOSITORY_URI</code> into <strong>Name</strong> and the repository URI of the Amazon ECR repository as the value.</p>
 <p>If you need to find it quickly, switch to your Cloud9 terminal and run:</p>
 <pre class="console"><code>aws ecr describe-repositories --repository-name workshop --query repositories[0].repositoryUri --output text</code></pre>

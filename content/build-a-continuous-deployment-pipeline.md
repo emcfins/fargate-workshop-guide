@@ -206,6 +206,8 @@ it to authenticate with ECR and push an image into our repository.
 
 1. Enter `WorkshopBuildRole` in **Role name**.
 
+    ![](images/build-a-continuous-deployment-pipeline/service-role.png)
+
 1. Extend **Advanced Settings**. Create an **Environment Variable** for the
    Amazon ECR repository URI. Enter `REPOSITORY_URI` into **Name** and the
    repository URI of the Amazon ECR repository as the value. 
