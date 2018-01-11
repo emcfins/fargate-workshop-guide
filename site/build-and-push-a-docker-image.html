@@ -20,7 +20,7 @@
 <h1>Running Containers on AWS Fargate</h1>
 <h2 id="build-and-push-a-docker-image">Build and Push a Docker Image</h2>
 <p>This module walks the the process of building and pushing a Docker image of a small web application for later deployment. A Docker image is a deployable artifact that includes both application code and its dependencies. In this module, we’ll clone a repository from GitHub into our AWS Cloud9 workspace, build a Docker image from it, test it, and push it to the Amazon ECR repository created in the previous module.</p>
-<p>The sample application is a simple web application for storing notable quotations. It’s written as a [node.js][node] application and uses the [Express][express] web framework and the [AWS SDK][aws-sdk-js]. Quotations are stored in a simple DynamoDB table called <code>quotes</code>.</p>
+<p>The sample application is a simple web application for storing notable quotations. It’s written as a <a href="http://nodejs.org">node.js</a> application and uses the <a href="http://expressjs.com">Express</a> web framework and the <a href="https://aws.amazon.com/sdk-for-node-js/">AWS SDK</a>. Quotations are stored in a simple DynamoDB table called <code>quotes</code>.</p>
 <p>The application has four endpoints:</p>
 <table>
 <thead>
@@ -50,7 +50,7 @@
 </table>
 <h3 id="implementation">Implementation</h3>
 <h4 id="build-the-docker-image">1. Build the Docker Image</h4>
-<p>Clone the sample application from the [GitHub repo][repo] and build it using a tag of your repository from the repository URI you noted in the previous module.</p>
+<p>Clone the sample application from the <a href="https://github.com/jpignata/fargate">GitHub repo</a> and build it using a tag of your repository from the repository URI you noted in the previous module.</p>
 <p><strong>✅ Step-by-step Instructions</strong></p>
 <ol type="1">
 <li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
@@ -65,7 +65,7 @@ remote: Total 6 (delta 0), reused 6 (delta 0), pack-reused 0
 Unpacking objects: 100% (6/6), done.</code></pre></li>
 <li><p>The <code>fargate-workshop-app</code> directory will now appear in the environment explorer in the left-hand module. Expand it by clicking on it and open the files in the directory by double clicking on them.</p>
 <p><img src="images/build-environment-tree.png" /></p></li>
-<li><p>Open the Dockerfile and inspect its contents. A [Dockerfile][dockerfile] is a text document that contains all the commands a user could call on the command line to assemble an image.</p>
+<li><p>Open the Dockerfile and inspect its contents. A <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> is a text document that contains all the commands a user could call on the command line to assemble an image.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">FROM</span> node:8.9.4             <span class="co"># Use node:8.9.4 as the base image</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">WORKDIR</span> /app                <span class="co"># Set the working directory for future commands</span></a>

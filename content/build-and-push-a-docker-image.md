@@ -327,3 +327,8 @@ will configure a task definition and its IAM role, create a load balancer, and
 create a new ECS service for this Docker container
 
 [create-a-service]: create-a-service.html
+[node]: http://nodejs.org
+[express]: http://expressjs.com
+[aws-sdk-js]: https://aws.amazon.com/sdk-for-node-js/
+[repo]: https://github.com/jpignata/fargate
+[dockerfile]: https://docs.docker.com/engine/reference/builder/

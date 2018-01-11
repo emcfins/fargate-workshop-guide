@@ -250,3 +250,5 @@ it to authenticate with ECR and push an image into our repository.
     ![](images/build-a-continuous-deployment-pipeline/pipeline-details.png)
 
 1. Click **Create pipeline**.
+
+[find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
