@@ -35,14 +35,14 @@
 <li><p>Click on <strong>Choose a service</strong> and click <strong>DynamoDB</strong>.</p></li>
 <li><p>Click on <strong>Actions</strong>.</p></li>
 <li><p>Expand the <strong>Read</strong> permissions and check the <strong>Scan</strong> and <strong>GetItem</strong> checkboxes.</p></li>
-<li><p>Expand the <strong>Write</strong> permissions and check the <strong>PutItem</strong> checkbox.</p></li>
+<li><p>Expand the <strong>Write</strong> permissions and check the <strong>PutItem</strong> and <strong>DeleteItem</strong> checkboxes.</p></li>
 <li><p>Click <strong>Resources</strong> to limit the role to the <strong>quotes</strong> table.</p></li>
 <li><p>Click <strong>Add ARN</strong> next to <strong>table</strong>.</p></li>
 <li><p>Enter <code>us-east-1</code> in <strong>Region</strong>, your <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html">Account ID</a> in <strong>Account</strong>, and <code>quotes</code> in <strong>Table name</strong>.</p>
 <p><img src="images/create-a-service/add-arn.png" /></p></li>
 <li><p>Click <strong>Add</strong>.</p>
 <p><img src="images/create-a-service/visual-editor.png" /></p>
-<p>This will result in a policy allowing <strong>dynamodb:PutItem</strong>, <strong>dynamodb:Scan</strong>, and <strong>dyanmodb:GetItem</strong>.</p>
+<p>This will result in a policy allowing <strong>dynamodb:PutItem</strong>, <strong>dynamodb:Scan</strong>, <strong>dynamodb:DeleteItem</strong>, and <strong>dyanmodb:GetItem</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="dt">&quot;Version&quot;</span><span class="fu">:</span> <span class="st">&quot;2012-10-17&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">    <span class="dt">&quot;Statement&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -51,12 +51,13 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6">            <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">                <span class="st">&quot;dynamodb:PutItem&quot;</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">                <span class="st">&quot;dynamodb:GetItem&quot;</span><span class="ot">,</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">                <span class="st">&quot;dynamodb:Scan&quot;</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">            <span class="ot">]</span><span class="fu">,</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">            <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:dynamodb:us-east-1:123456789012:table/quotes&quot;</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">        <span class="fu">}</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="ot">]</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="fu">}</span></a></code></pre></div></li>
+<a class="sourceLine" id="cb1-9" data-line-number="9">                <span class="st">&quot;dynamodb:Deletetem&quot;</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">                <span class="st">&quot;dynamodb:Scan&quot;</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">            <span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">            <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;arn:aws:dynamodb:us-east-1:123456789012:table/quotes&quot;</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">        <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="ot">]</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="fu">}</span></a></code></pre></div></li>
 <li><p>Click <strong>Review policy</strong>.</p></li>
 <li><p>Enter <code>WorkshopAppPolicy</code> in <strong>Name</strong>.</p>
 <p><img src="images/create-a-service/review-policy.png" /></p></li>
@@ -242,10 +243,10 @@
 <pre class="console"><code>curl -Ss http://workshop-123456789.us-east-1.elb.amazonaws.com/quotes</code></pre></li>
 </ol>
 <h3 id="recap">⭐ Recap</h3>
-<p>🔑</p>
-<p>🛠️</p>
+<p>🔑 Amazon ECR services keep the desired number of tasks running and integrate with Elastic Load Balancing to distribute traffic across them.</p>
+<p>🛠️ You’ve deployed the sample application as a service behind an Application Load Balancer.</p>
 <h3 id="next">Next</h3>
-<p>✅</p>
+<p>✅ Proceed to the next module, [Build a Continuous Deployment Pipeline][build-a-continuous-deployment-pipeline], wherein we’ll use AWS developer tools to create an automated deployment system to build our application and deploy our services when source code changes.</p>
 
 </div>
 <div class='col-3 d-none d-lg-block d-xl-block'>

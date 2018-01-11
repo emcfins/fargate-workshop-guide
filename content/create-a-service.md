@@ -43,7 +43,8 @@ DynamoDB table we created in the last module.
 1. Expand the **Read** permissions and check the **Scan** and **GetItem**
    checkboxes.
 
-1. Expand the **Write** permissions and check the **PutItem** checkbox.
+1. Expand the **Write** permissions and check the **PutItem** and **DeleteItem**
+   checkboxes.
 
 1. Click **Resources** to limit the role to the **quotes** table.
 
@@ -59,7 +60,7 @@ DynamoDB table we created in the last module.
     ![](images/create-a-service/visual-editor.png)
 
     This will result in a policy allowing **dynamodb:PutItem**,
-    **dynamodb:Scan**, and **dyanmodb:GetItem**.
+    **dynamodb:Scan**, **dynamodb:DeleteItem**, and **dyanmodb:GetItem**.
 
     ```json
     {
@@ -70,6 +71,7 @@ DynamoDB table we created in the last module.
                 "Action": [
                     "dynamodb:PutItem",
                     "dynamodb:GetItem",
+                    "dynamodb:Deletetem",
                     "dynamodb:Scan"
                 ],
                 "Resource": "arn:aws:dynamodb:us-east-1:123456789012:table/quotes"
@@ -442,12 +444,17 @@ Docker container.
 
 ### ⭐ Recap
 
-🔑
+🔑 Amazon ECR services keep the desired number of tasks running and integrate with Elastic
+Load Balancing to distribute traffic across them.
 
-🛠️
+🛠️ You've deployed the sample application as a service behind an Application
+Load Balancer.
 
 ### Next
 
-✅ 
+✅  Proceed to the next module, [Build a Continuous Deployment
+Pipeline][build-a-continuous-deployment-pipeline], wherein we'll use AWS
+developer tools to create an automated deployment system to build our
+application and deploy our services when source code changes.
 
 [find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
