@@ -19,6 +19,17 @@ containerized applications on Amazon EC2 instances that we manage. Amazon ECS
 is the orchestration service responsible for running docker containers and AWS
 Fargate is the underlying compute platform where the containers will run.
 
+### Setup
+
+Ensure that you've followed the [setup guide][setup] before starting this
+module. For this section, you'll require an IAM user with access to create and
+modify resources in the following services:
+
+- Amazon ECS
+- Amazon ECR
+- AWS IAM
+- Amazon DynamoDB
+
 ### Implementation
 
 Using the [Amazon ECS first run wizard][first-run], create an ECS cluster,

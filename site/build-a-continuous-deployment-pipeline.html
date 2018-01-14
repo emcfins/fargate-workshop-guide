@@ -19,9 +19,18 @@
 <div class='col-12 col-xl-9 col-lg-9' id='guide'>
 <h1>Running Containers on AWS Fargate</h1>
 <h2 id="build-a-continuous-deployment-pipeline">Build a Continuous Deployment Pipeline</h2>
-<p>In this module we’ll complete the workshop by setting up a continuous deployment pipeline to automatically move our changes from our source code repository to prodcution on check-in. We’ll use <strong>AWS CodeCommit</strong> as our source code repository, i<strong>AWS CodePipeline</strong> to ochestrate the pipeline and <strong>AWS CodeBuild</strong> to build and push our Docker container.</p>
+<p>In this module we’ll complete the workshop by setting up a continuous deployment pipeline to automatically move our changes from our source code repository to prodcution on check-in. We’ll use <strong>AWS CodeCommit</strong> as our source code repository, <strong>AWS CodePipeline</strong> to ochestrate the pipeline and <strong>AWS CodeBuild</strong> to build and push our Docker container.</p>
 <p>Our pipeline has three stages. In the <strong>Source</strong> stage, the pipeline downloads the latest revision from CodeCommit. In <strong>Build</strong> stage, the pipeline triggers a CodeBuild build to assemble a new Docker container image and push it to Amazon ECR. In the process, it will generate a JSON file defining the new Docker image tag and which container should be update. CodePipeline will use that configuration in the <strong>Deploy</strong> stage to replace the container’s image URL within our service.</p>
 <p><img src="images/build-a-continuous-deployment-pipeline/pipeline.png" /></p>
+<h3 id="setup">Setup</h3>
+<p>Ensure that you’ve followed the <a href="setup.html">setup guide</a> before starting this module. This section builds upon the <a href="index.html#introduction">Introduction</a> section which must be completed first.</p>
+<p>For this section, you’ll require an IAM user with access to create and modify resources in the following services:</p>
+<ul>
+<li>AWS IAM</li>
+<li>AWS CodeCommit</li>
+<li>AWS CodePipeline</li>
+<li>AWS CodeBuild</li>
+</ul>
 <h3 id="implementation">Implementation</h3>
 <h4 id="create-a-aws-codecommit-repository">1. Create a AWS CodeCommit Repository</h4>
 <p>To get started, we’ll need a place to keep our code. AWS CodeCommit is a fully-managed source control service that makes it easy to host secure and highly scalable private Git repositories.</p>
@@ -65,7 +74,7 @@ git config --global credential.UseHttpPath true</code></pre>
 <li><p>Expand the <strong>Write</strong> permissions and check the <strong>CompleteLayerUpload</strong>, <strong>UploadLayerPart</strong>, <strong>InitiateLayerUpload</strong>, and *PutImage** checkboxes.</p></li>
 <li><p>Click <strong>Resources</strong> to limit the role to the <strong>workshop</strong> repository.</p></li>
 <li><p>Click <strong>Add ARN</strong> next to <strong>repository</strong>.</p></li>
-<li><p>Enter <code>us-east-1</code> in <strong>Region</strong>, your <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html">Account ID</a> in <strong>Account</strong>, and <code>workshop</code> in <strong>repository</strong>.</p>
+<li><p>Enter <code>us-east-1</code> in <strong>Region</strong>, your [Account ID][find-account-id] in <strong>Account</strong>, and <code>workshop</code> in <strong>repository</strong>.</p>
 <p><img src="images/build-a-continuous-deployment-pipeline/add-arn.png" /></p></li>
 <li><p>Click <strong>Add</strong>.</p>
 <p><img src="images/build-a-continuous-deployment-pipeline/visual-editor.png" /></p>
@@ -142,6 +151,13 @@ git config --global credential.UseHttpPath true</code></pre>
 <p><img src="images/build-a-continuous-deployment-pipeline/pipeline-details.png" /></p></li>
 <li><p>Click <strong>Create pipeline</strong>.</p></li>
 </ol>
+<h4 id="deploy-a-new-revision">5. Deploy a New Revision</h4>
+<ol type="1">
+<li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
+<li><p>Open the file <code>fargate-workshop-app/index.js</code> by navigating to it in the environment tree and double clicking the filename.</p></li>
+<li><p>Scroll down until you find the commented out delete action.</p></li>
+<li><p>Uncomment the code block. You can do this by highlighting it and pressing</p></li>
+</ol>
 
 </div>
 <div class='col-3 d-none d-lg-block d-xl-block'>
@@ -149,7 +165,7 @@ git config --global credential.UseHttpPath true</code></pre>
 <strong>Contents</strong>
 <ul>
 <li>
-<a href='index.html'>Introduction</a>
+<a href='index.html'>Welcome</a>
 </li>
 <li>
 <a href='setup.html'>Setup</a>
@@ -166,7 +182,10 @@ git config --global credential.UseHttpPath true</code></pre>
 </ul>
 </li>
 <li>
-<a href='index.html#modules'>Modules</a>
+<a href='index.html#sections'>Sections</a>
+<ul>
+<li>
+<a href='index.html#introduction'>Introduction</a>
 <ol>
 <li>
 <a href='getting-started-with-amazon-ecs-using-aws-fargate.html'>Getting Started with Amazon ECS using AWS Fargate</a>
@@ -180,10 +199,17 @@ git config --global credential.UseHttpPath true</code></pre>
 <li>
 <a href='create-a-service.html'>Create a Service</a>
 </li>
+</ol>
+</li>
+<li>
+<a href='index.html#ci-cd'>CI/CD</a>
+</li>
+<ol>
 <li>
 <a href='build-a-continuous-deployment-pipeline.html'>Build a Continuous Deployment Pipeline</a>
 </li>
 </ol>
+</ul>
 </li>
 </ul>
 </div>

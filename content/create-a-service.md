@@ -450,11 +450,6 @@ Load Balancing to distribute traffic across them.
 🛠️ You've deployed the sample application as a service behind an Application
 Load Balancer.
 
-### Next
-
-✅  Proceed to the next module, [Build a Continuous Deployment
-Pipeline][build-a-continuous-deployment-pipeline], wherein we'll use AWS
-developer tools to create an automated deployment system to build our
-application and deploy our services when source code changes.
+🎉 You've completed this section!
 
 [find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html

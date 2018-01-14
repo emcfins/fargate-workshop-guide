@@ -3,7 +3,7 @@
 In this module we'll complete the workshop by setting up a continuous deployment
 pipeline to automatically move our changes from our source code repository to
 prodcution on check-in. We'll use **AWS CodeCommit** as our source code
-repository, i**AWS CodePipeline** to ochestrate the pipeline and **AWS
+repository, **AWS CodePipeline** to ochestrate the pipeline and **AWS
 CodeBuild** to build and push our Docker container.
 
 Our pipeline has three stages. In the **Source** stage, the pipeline downloads
@@ -15,6 +15,20 @@ configuration in the **Deploy** stage to replace the container's image URL
 within our service.
 
 ![](images/build-a-continuous-deployment-pipeline/pipeline.png)
+
+### Setup
+
+Ensure that you've followed the [setup guide][setup] before starting this
+module. This section builds upon the [Introduction][introduction] section which
+must be completed first.
+
+For this section, you'll require an IAM user with access to create and
+modify resources in the following services:
+
+- AWS IAM
+- AWS CodeCommit
+- AWS CodePipeline
+- AWS CodeBuild
 
 ### Implementation
 
@@ -253,4 +267,19 @@ it to authenticate with ECR and push an image into our repository.
 
 1. Click **Create pipeline**.
 
-[find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
+#### 5. Deploy a New Revision
+
+1. Switch to the tab where you have your Cloud9 environment opened.
+
+1. Open the file `fargate-workshop-app/index.js` by navigating to it in the
+   environment tree and double clicking the filename.
+
+1. Scroll down until you find the commented out delete action.
+
+1. Uncomment the code block. You can do this by highlighting it and pressing
+
+
+
+
+[setup]: setup.html
+[introduction]: index.html#introduction

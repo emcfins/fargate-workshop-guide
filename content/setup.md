@@ -3,9 +3,10 @@
 ### AWS Account
 
 In order to complete this workshop you'll need an AWS Account and access to
-create AWS Identity and Access Management (IAM), Amazon Elastic Container
-Service (ECS), Amazon Elastic Container Registry (ECR), Amazon DynamoDB, and AWS
-Cloud9 resources within that account.
+create AWS Identity and Access Management (AWS IAM), Amazon Elastic Container
+Service (ECS), Amazon Elastic Container Registry (Amazon ECR), Amazon DynamoDB,
+and AWS Cloud9 resources within that account. In each section, the first module
+will note the specific services to which your IAM user will require access.
 
 The code and instructions in this workshop assume only one participant is using
 a given AWS account at a time. If you try sharing an account with another
@@ -23,7 +24,7 @@ resources from the workshop.
 
 Use **US East (N. Virginia)** for this workshop. It supports the complete set of
 covered in the material including AWS Fargate, Amazon ECS, Amazon ECR, Amazon
-DynamoDB, and AWS Cloud 9. Consult the [Region Table][region-table] to
+DynamoDB, and AWS Cloud9. Consult the [Region Table][region-table] to
 determine which services are available in a Region.
 
 ### AWS Cloud9 IDE

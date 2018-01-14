@@ -19,11 +19,12 @@
 <div class='col-12 col-xl-9 col-lg-9' id='guide'>
 <h1>Running Containers on AWS Fargate</h1>
 <h2 id="welcome">Welcome!</h2>
-<p>Welcome to the <em>Running Containers on AWS Fargate</em> workshop!</p>
-<p>This is a 200-level workshop designed to illustrate how to deploy containerized applications to AWS without managing clusters or provisioning servers.</p>
-<p>In this workshop, we’re going deploy applications using <a href="http://aws.amazon.com/ecs/">Amazon Elastic Container Service (Amazon ECS)</a> to orchestrate our containers on top of <a href="http://aws.amazon.com/fargate/">AWS Fargate</a>, <a href="http://aws.amazon.com/ecr/">Amazon Elastic Container Registry (Amazon ECR)</a> to store our Docker container images, and <a href="http://aws.amazon.com/cloud9/">AWS Cloud9</a> to drive our development and deployment. In the last module, we’ll use <a href="http://aws.amazon.com/codecommit/">AWS CodeCommit</a>, <a href="http://aws.amazon.com/codepipeline/">AWS CodePipeline</a>, and <a href="http://aws.amazon.com/codebuild/">AWS CodeBuild</a> to create a continuous deployment pipeline to automatically deploy changes to our application to Amazon ECS.</p>
-<h3 id="modules">Modules</h3>
-<p>This workshop is divided into individual modules. Each module describes a scenario of what to build within that module. The modules include step-by-step directions to help you implement the architecture and verify your work. Some modules may contain instructions for both the AWS Management Console and the AWS Command Line Interface giving you the option to choose either to complete the task.</p>
+<p>Welcome to the <em>Running Containers on AWS Fargate</em> workshop.</p>
+<p>In this workshop, we’re going deploy applications using <a href="http://aws.amazon.com/ecs/">Amazon Elastic Container Service (Amazon ECS)</a> to orchestrate our containers on top of <a href="http://aws.amazon.com/fargate/">AWS Fargate</a> using <a href="http://aws.amazon.com/cloud9/">AWS Cloud9</a> to drive our development and deployment. Amazon ECS and AWS Fargate are deeply integrated into the AWS platform so we’ll be working with other services along the way including <a href="http://aws.amazon.com/ecr/">Amazon Elastic Container Registry (Amazon ECR)</a>, <a href="http://aws.amazon.com/iam/">AWS Identity and Access Management (AWS IAM)</a>, <a href="http://aws.amazon.com/dynamodb/">Amazon DynamoDB</a>, and <a href="https://aws.amazon.com/products/developer-tools/">AWS developer tools</a> including <a href="http://aws.amazon.com/codecommit/">AWS CodeCommit</a>, <a href="http://aws.amazon.com/codepipeline/">AWS CodePipeline</a>, and <a href="http://aws.amazon.com/codebuild/">AWS CodeBuild</a>.</p>
+<h3 id="sections">Sections</h3>
+<p>This workshop is divided into sections each of which have one or more individual modules. Each module describes a scenario of what we’re going to build and step-by-step directions to help you implement the architecture and verify your work. Some modules contain instructions for both the AWS Management Console and the AWS Command Line Interface giving you the option to choose either to complete the task.</p>
+<h4 id="introduction">Introduction</h4>
+<p>This is a 200-level workshop designed to illustrate how to deploy containerized applications to AWS without managing clusters or provisioning servers. It contains four modules which start from stratch to create a cluster, a Docker image repository, to build and push a new Docker container image, and to configure a new service to run our container on Amazon ECS using AWS Fargate.</p>
 <p>The modules build on each other and are intended to be executed linearly.</p>
 <table>
 <colgroup>
@@ -53,12 +54,33 @@
 <td><a href="create-a-service.html">Create a Service</a></td>
 <td>Configure a task definition, create a load balancer, and create a service to run our Docker container image.</td>
 </tr>
+</tbody>
+</table>
+<h4 id="cicd">CI/CD</h4>
+<p>Building on the application we’ve deployed in the Introduction module, we’ll build a continuous deployment pipeline. With continuous deployment, revisions are deployed to a production environment automatically without explicit approval from a developer, making the entire software release process automated.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 4%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Module</th>
+<th>Level</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
 <td><a href="build-a-continuous-deployment-pipeline.html">Build a Continuous Deployment Pipeline</a></td>
-<td>Using AWS developer tools, create a pipeline to automatically deploy changes committed to a source repository to the ECS service.</td>
+<td>200</td>
+<td>Using <a href="http://aws.amazon.com/codecommit/">AWS CodeCommit</a>, <a href="http://aws.amazon.com/codepipeline/">AWS CodePipeline</a>, and <a href="http://aws.amazon.com/codebuild/">AWS CodeBuild</a>, create a continuous deployment pipeline to automatically deploy changes to our application.</td>
 </tr>
 </tbody>
 </table>
+<h3 id="issues-comments-feedback">Issues, Comments, Feedback?</h3>
+<p>I’m <a href="https://github.com/jpignata/fargate-workshop-guide">open source</a>! If you see an issue, want to contribute content, or have overall feedback please open an <a href="https://github.com/jpignata/fargate-workshop-guide/issues">issue</a> or <a href="https://github.com/jpignata/fargate-workshop-guide/pulls">pull request</a>.</p>
 <h3 id="next">Next</h3>
 <p>✅ Review and follow the directions in the <a href="setup.html">setup guide</a>, wherein we’ll configure our AWS Cloud9 IDE and discuss pre-requisites like Region selection and AWS Account setup.</p>
 
@@ -68,7 +90,7 @@
 <strong>Contents</strong>
 <ul>
 <li>
-<a href='index.html'>Introduction</a>
+<a href='index.html'>Welcome</a>
 </li>
 <li>
 <a href='setup.html'>Setup</a>
@@ -85,7 +107,10 @@
 </ul>
 </li>
 <li>
-<a href='index.html#modules'>Modules</a>
+<a href='index.html#sections'>Sections</a>
+<ul>
+<li>
+<a href='index.html#introduction'>Introduction</a>
 <ol>
 <li>
 <a href='getting-started-with-amazon-ecs-using-aws-fargate.html'>Getting Started with Amazon ECS using AWS Fargate</a>
@@ -99,10 +124,17 @@
 <li>
 <a href='create-a-service.html'>Create a Service</a>
 </li>
+</ol>
+</li>
+<li>
+<a href='index.html#ci-cd'>CI/CD</a>
+</li>
+<ol>
 <li>
 <a href='build-a-continuous-deployment-pipeline.html'>Build a Continuous Deployment Pipeline</a>
 </li>
 </ol>
+</ul>
 </li>
 </ul>
 </div>

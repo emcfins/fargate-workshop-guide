@@ -85,7 +85,7 @@ table tr:nth-child(2n) {
 
 .toc ul {
   list-style: none outside none;
-  padding: 0 10px;
+  padding-left: 10px;
   margin: 0;
 }
 

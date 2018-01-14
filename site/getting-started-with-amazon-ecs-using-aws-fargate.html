@@ -51,6 +51,14 @@
 </tbody>
 </table>
 <p>We’ll deploy our service via Amazon ECS using AWS Fargate as the launch type. The Fargate launch type allows us to run our containerized applications without the need to provision and manage the backend infrastructure. Amazon ECS also can launch tasks and services using the EC2 launch type which runs containerized applications on Amazon EC2 instances that we manage. Amazon ECS is the orchestration service responsible for running docker containers and AWS Fargate is the underlying compute platform where the containers will run.</p>
+<h3 id="setup">Setup</h3>
+<p>Ensure that you’ve followed the <a href="#setup">setup guide</a> before starting this module. For this section, you’ll require an IAM user with access to create and modify resources in the following services:</p>
+<ul>
+<li>Amazon ECS</li>
+<li>Amazon ECR</li>
+<li>AWS IAM</li>
+<li>Amazon DynamoDB</li>
+</ul>
 <h3 id="implementation">Implementation</h3>
 <p>Using the <a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/firstRun">Amazon ECS first run wizard</a>, create an ECS cluster, define a new task definition for a Hello World application, and deploy it as a service onto the new cluster.</p>
 <p><strong>✅ Step-by-step Instructions</strong></p>
@@ -87,7 +95,7 @@
 <strong>Contents</strong>
 <ul>
 <li>
-<a href='index.html'>Introduction</a>
+<a href='index.html'>Welcome</a>
 </li>
 <li>
 <a href='setup.html'>Setup</a>
@@ -104,7 +112,10 @@
 </ul>
 </li>
 <li>
-<a href='index.html#modules'>Modules</a>
+<a href='index.html#sections'>Sections</a>
+<ul>
+<li>
+<a href='index.html#introduction'>Introduction</a>
 <ol>
 <li>
 <a href='getting-started-with-amazon-ecs-using-aws-fargate.html'>Getting Started with Amazon ECS using AWS Fargate</a>
@@ -118,10 +129,17 @@
 <li>
 <a href='create-a-service.html'>Create a Service</a>
 </li>
+</ol>
+</li>
+<li>
+<a href='index.html#ci-cd'>CI/CD</a>
+</li>
+<ol>
 <li>
 <a href='build-a-continuous-deployment-pipeline.html'>Build a Continuous Deployment Pipeline</a>
 </li>
 </ol>
+</ul>
 </li>
 </ul>
 </div>

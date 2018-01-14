@@ -20,11 +20,11 @@
 <h1>Running Containers on AWS Fargate</h1>
 <h2 id="setup">Setup</h2>
 <h3 id="aws-account">AWS Account</h3>
-<p>In order to complete this workshop you’ll need an AWS Account and access to create AWS Identity and Access Management (IAM), Amazon Elastic Container Service (ECS), Amazon Elastic Container Registry (ECR), Amazon DynamoDB, and AWS Cloud9 resources within that account.</p>
+<p>In order to complete this workshop you’ll need an AWS Account and access to create AWS Identity and Access Management (AWS IAM), Amazon Elastic Container Service (ECS), Amazon Elastic Container Registry (Amazon ECR), Amazon DynamoDB, and AWS Cloud9 resources within that account. In each section, the first module will note the specific services to which your IAM user will require access.</p>
 <p>The code and instructions in this workshop assume only one participant is using a given AWS account at a time. If you try sharing an account with another participant, you will encounter naming conflicts for certain resources. You can work around this by either using a suffix in your resource names or using distinct Regions, but the instructions do not provide details on the changes required to make this work.</p>
 <p>Use a personal account or create a new AWS account for this workshop rather than using an organization’s account to ensure you have full access to the necessary services and to ensure you do not leave behind any vestigial resources from the workshop.</p>
 <h3 id="region">Region</h3>
-<p>Use <strong>US East (N. Virginia)</strong> for this workshop. It supports the complete set of covered in the material including AWS Fargate, Amazon ECS, Amazon ECR, Amazon DynamoDB, and AWS Cloud 9. Consult the <a href="https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/">Region Table</a> to determine which services are available in a Region.</p>
+<p>Use <strong>US East (N. Virginia)</strong> for this workshop. It supports the complete set of covered in the material including AWS Fargate, Amazon ECS, Amazon ECR, Amazon DynamoDB, and AWS Cloud9. Consult the <a href="https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/">Region Table</a> to determine which services are available in a Region.</p>
 <h3 id="aws-cloud9-ide">AWS Cloud9 IDE</h3>
 <p>AWS Cloud9 is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. It includes a code editor, debugger, and terminal. Cloud9 comes pre-packaged with essential tools for popular programming languages and the AWS Command Line Interface (CLI) pre-installed so you don’t need to install files or configure your laptop for this workshop. Your Cloud9 environment will have access to the same AWS resources as the user with which you logged into the AWS Management Console.</p>
 <p>Take a moment now and setup your Cloud9 development environment.</p>
@@ -63,7 +63,7 @@
 <strong>Contents</strong>
 <ul>
 <li>
-<a href='index.html'>Introduction</a>
+<a href='index.html'>Welcome</a>
 </li>
 <li>
 <a href='setup.html'>Setup</a>
@@ -80,7 +80,10 @@
 </ul>
 </li>
 <li>
-<a href='index.html#modules'>Modules</a>
+<a href='index.html#sections'>Sections</a>
+<ul>
+<li>
+<a href='index.html#introduction'>Introduction</a>
 <ol>
 <li>
 <a href='getting-started-with-amazon-ecs-using-aws-fargate.html'>Getting Started with Amazon ECS using AWS Fargate</a>
@@ -94,10 +97,17 @@
 <li>
 <a href='create-a-service.html'>Create a Service</a>
 </li>
+</ol>
+</li>
+<li>
+<a href='index.html#ci-cd'>CI/CD</a>
+</li>
+<ol>
 <li>
 <a href='build-a-continuous-deployment-pipeline.html'>Build a Continuous Deployment Pipeline</a>
 </li>
 </ol>
+</ul>
 </li>
 </ul>
 </div>
