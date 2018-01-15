@@ -384,20 +384,47 @@ Docker container.
 1. Open the file `fargate-workshop-app/ecs/service.json` by navigating to it in
    the environment tree and double clicking the filename.
 
-1. There are several placeholders in this file to fill-in: the ARN of the target
-   group and the IDs of the subnets and security group created for us in the
-   first run wizard.
 
-1. To find the ARN of the target group, run this command in the Cloud9
-   terminal:
+1. Inspect the file contents. There are several placeholders in this file to
+   fill-in: the ARN of the target group and the IDs of the subnets and security
+   group created for us in the first run wizard.
+
+   ```json
+   {
+       "cluster": "workshop",
+       "serviceName": "workshop",
+       "taskDefinition": "workshop:1",
+       "desiredCount": 1,
+       "launchType": "FARGATE",
+       "platformVersion": "LATEST",
+       "loadBalancers": [
+           {
+               "targetGroupArn": "YOUR_TARGET_GROUP_ARN_HERE",
+               "containerName": "workshop",
+               "containerPort": 80
+           }
+       ],
+       "networkConfiguration": {
+           "awsvpcConfiguration": {
+               "subnets": ["YOUR_SUBNET1_ID_HERE", "YOUR_SUBNET2_ID_HERE"],
+               "securityGroups": ["YOUR_SECURITY_GROUP_ID_HERE"],
+               "assignPublicIp": "DISABLED"
+           }
+       }
+   }
+   ```
+
+1. Fill in the **YOUR_TARGET_GROUP_ARN_HERE** placeholder. To find the ARN of
+   the target group, run this command in the Cloud9 terminal:
 
     ```console
     aws elbv2 describe-target-groups --names workshop --query TargetGroups[0].TargetGroupArn --output text
     ```
 <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
-1. To find the IDs of the subnets created in the first run wizard, run this
-   command in the Cloud9 terminal:
+1. Fill in the **YOUR_SUBNET1_ID_HERE** and **YOUR_SUBNET2_ID_HERE**
+   placeholders. To find the IDs of the subnets created in the first run wizard,
+   run this command in the Cloud9 terminal:
 
     ```console
     aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
@@ -405,8 +432,9 @@ Docker container.
     ```
 <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
-1. To find the ID of the security group created in the first run wizard, run
-   this command in the Cloud9 terminal:
+1. Fill in the **YOUR_SECURITY_GROUP_ID_HERE** placeholder. To find the ID of
+   the security group created in the first run wizard, run this command in the
+   Cloud9 terminal:
 
     ```console
     aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
