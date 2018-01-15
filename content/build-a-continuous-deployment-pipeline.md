@@ -58,7 +58,8 @@ Now that we have a repository, we want to push our code into it. These next few
 steps will configure git to use the AWS CLI credential helper, move the origin
 remoe to the CodeCommit repository, and push to it.
 
-1. Switch to the tab where you have your Cloud9 environment opened.
+1. Switch to the tab where you have your Cloud9 environment opened. Run the next
+   few commands in the terminal.
 
 1. Configure the CodeCommit AWS CLI credential helper:
 
@@ -66,21 +67,21 @@ remoe to the CodeCommit repository, and push to it.
     git config --global credential.helper '!aws codecommit credential-helper $@'
     git config --global credential.UseHttpPath true
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Set the remote URL of origin to the new CodeCommit repository:
 
     ```console
     git remote set-url origin https://git-codecommit.us-east-1.amazonaws.com/v1/repos/workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Push the code to CodeCommit:
 
     ```console
     git push origin master
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 #### 3. Create a Service Role for AWS CodeBuild
 
@@ -231,7 +232,7 @@ it to authenticate with ECR and push an image into our repository.
     ```console
     aws ecr describe-repositories --repository-name workshop --query repositories[0].repositoryUri --output text
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     ![](images/build-a-continuous-deployment-pipeline/env-var.png)
 
@@ -276,10 +277,90 @@ it to authenticate with ECR and push an image into our repository.
 
 1. Scroll down until you find the commented out delete action.
 
-1. Uncomment the code block. You can do this by highlighting it and pressing
+    ![](images/build-a-continuous-deployment-pipeline/commented-code.png)
 
+1. Uncomment the code block. You can do this by selecting the code block, going
+   to **Edit**, **Comment**, and selecting **Toggle Comment** in the menu bar, or
+   processing **⌘-/** (macOS) / **Ctrl-/** (Windows).
 
+1. Save the file by going to **File** and selecting **Save** in the menu bar, or
+   pressing **⌘SS** (macOS) / **Ctrl-S** (Windows).
 
+1. Check in the changes by running the following command in the Cloud9 terminal:
+
+    ```console
+    git commit -am "Adding delete action"
+    ```
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. Push the changes to the CodeCommit repository by running the following
+   command in the Cloud9 terminal:
+
+    ```console
+    git push origin master
+    ```
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+1. Go to the AWS Management Console, click **Services** then select
+   **CodePipeline** under Developer Tools.
+
+1. Click on **workshop**.
+
+1. You'll see the changes move through the pipeline. While a stage is in
+   progress, CodePipeline indicates this by displaying the stage with a blue
+   color. If successful it'll turn green, if there's an error or other issue and
+   the pipeline can't proceed, it'll turn red. Wait for the pipeline to
+   complete.
+
+1. Switch back to your Cloud9 terminal to test the new endpoint. First, create
+   a new quotation by hitting your service through the DNSName of the your load
+   balancer. Replace the hostname in the following command:
+
+    ```console
+    curl -Ssi http://YOUR_LOAD_BALANCER_DNSNAME_HERE/quotes -X PUT -H "Content-Type: application/json" -d '{"Text":"If you don’t fail at least 90 percent of the time, you’re not aiming high enough.","AttributedTo":"Alan Kay"}'
+    ```
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+    You'll get back the HTTP response including a Location header of your newly created quotation:
+
+    ```console
+    HTTP/1.1 201 Created
+    X-Powered-By: Express
+    Location: /quotes/93752220-f995-11e7-b1fc-e1cb57d4a62c
+    Vary: Accept
+    Content-Type: text/plain; charset=utf-8
+    Content-Length: 68
+    Date: Mon, 15 Jan 2018 01:44:07 GMT
+    Connection: keep-alive
+
+    Created. Redirecting to /quotes/93752220-f995-11e7-b1fc-e1cb57d4a62c
+    ```
+
+1. Test your deployment by testing the newly created delete endpoint. Hit the
+   location header above with the DELETE method. For example, for the above
+   output, our command would be:
+
+    ```console
+    curl -Ss http://YOUR_LOAD_BALANCER_DNSNAME_HERE/quotes/93752220-f995-11e7-b1fc-e1cb57d4a62c -X DELETE
+    ```
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+
+### ⭐ Recap
+
+🔑 A continuous deployment pipeline is an automated manifestion of the process
+for getting your software from version control to your users. AWS CodePipeline
+is a managed continuous delivery service that builds, tests, and deploys your
+code on source control changes.
+
+🛠️ You've created a repository for your application in AWS CodeCommit, mapped
+your git remote, and pushed your code to it.
+
+🛠️ You've built a continuous deployment pipeline using AWS CodePipeline and
+configured a build project in AWS CodeBuild. Any changes in the master branch to
+your project will be automatically built as a Docker image, pushed to Amazon
+ECR, and deployed to Amazon ECR using AWS Fargate.
+
+🎉 You've completed this section!
 
 [setup]: setup.html
 [introduction]: index.html#introduction

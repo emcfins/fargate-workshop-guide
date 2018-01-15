@@ -56,7 +56,9 @@
 <li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
 <li><p>Clone the contents of the sample application to your environment by running <code>git clone https://github.com/jpignata/fargate-workshop-app</code> in the Cloud9 terminal:</p>
 <pre class="console"><code>git clone https://github.com/jpignata/fargate-workshop-app</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <pre class="console"><code>Admin:~/environment $ git clone https://github.com/jpignata/fargate-workshop-app
 Cloning into &#39;fargate-workshop-app&#39;...
 remote: Counting objects: 6, done.
@@ -83,10 +85,14 @@ Unpacking objects: 100% (6/6), done.</code></pre></li>
 <a class="sourceLine" id="cb3-15" data-line-number="15">                            <span class="co">#    this image</span></a></code></pre></div></li>
 <li><p>In the Cloud9 terminal, change your working directory to the newly cloned application directory by running: <code>cd fargate-workshop-app</code>.</p>
 <pre class="console"><code>cd fargate-workshop-app</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p></li>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
 <li><p>Build the Docker image and tag it using the repository URI you noted in the previous module. For example, if the repository URI were <code>123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code>, then you’d run:</p>
 <pre class="console"><code>docker build --tag 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop .</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>Ensure that you change the image name to the repository URI you noted in the previous module. You’ll see Docker building the image by applying each directive of the above Dockerfile in realtime:</p>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ docker build --tag 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop .
 Sending build context to Docker daemon  59.39kB
@@ -103,7 +109,9 @@ da59faba155b: Download complete
 ...</code></pre></li>
 <li><p>Verify that your Docker image has been built with the correct tag by running <code>docker images &lt;repository URI&gt;</code> in the Cloud9 terminal. For example:</p>
 <pre class="console"><code>docker images 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ docker images 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
 REPOSITORY                                              TAG                 IMAGE ID            CREATED             SIZE
 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop   latest              7fca0f295425        35 seconds ago      714MB</code></pre></li>
@@ -126,11 +134,15 @@ REPOSITORY                                              TAG                 IMAG
 <li><p>Install <code>jq</code> for JSON pretty printing.</p>
 <p>To aid in our testing, install <code>jq</code> which is a command line JSON processor. Install it by running <code>sudo yum install -y jq</code> in the Cloud9 terminal.</p>
 <pre class="console"><code>sudo yum install -y jq</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p></li>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button></li>
 <li><p>Run the Docker container by running <code>docker run</code> in the Cloud9 terminal using the Docker image we built in step 1:</p>
 <pre class="console"><code>docker run --detach --publish 80:80 --volume $HOME/.aws:/root/.aws \
   123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>You’ll need to change the last parameter to the Docker image tag you specified in step 1. Let’s look at each part of the command to understand what it is doing:</p>
 <table>
 <colgroup>
@@ -164,7 +176,9 @@ REPOSITORY                                              TAG                 IMAG
 </table></li>
 <li><p>Test the application using <code>curl</code>:</p>
 <pre class="console"><code>curl -Ss http://127.0.0.1/ | jq</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>If the application is running, you’ll see a JSON object with the hostname which will match the container ID you saw after running the previous step:</p>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/ | jq</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="fu">{</span></a>
@@ -172,13 +186,17 @@ REPOSITORY                                              TAG                 IMAG
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="fu">}</span></a></code></pre></div></li>
 <li><p>Next, hit the quotes index endpoint to list all quotes in the database.</p>
 <pre class="console"><code>curl -Ss http://127.0.0.1/quotes | jq</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>As we haven’t added any quotes yet, we’ll see an empty array:</p>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/quotes | jq</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">[]</span></a></code></pre></div></li>
 <li><p>Add a quote to the database:</p>
 <pre class="console"><code>curl -Ss http://127.0.0.1/quotes -X PUT -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;Text&quot;:&quot;There are no passengers on spaceship earth. We are all crew.&quot;,&quot;AttributedTo&quot;:&quot;Marshall McLuhan&quot;}&#39;</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>This command sends the following JSON object to the quotes create endpoint:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">  <span class="dt">&quot;Text&quot;</span><span class="fu">:</span> <span class="st">&quot;There are no passengers on spaceship earth. We are all crew.&quot;</span><span class="fu">,</span></a>
@@ -186,7 +204,9 @@ REPOSITORY                                              TAG                 IMAG
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="fu">}</span></a></code></pre></div></li>
 <li><p>Hit the quotes index endpoint to list all quotes in the database to verify the quote has been added:</p>
 <pre class="console"><code>curl -Ss http://127.0.0.1/quotes | jq</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>The output will resemble this, with a different UUID:</p>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ curl -Ss http://127.0.0.1/quotes | jq</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ot">[</span></a>
@@ -204,12 +224,16 @@ REPOSITORY                                              TAG                 IMAG
 <li><p>Switch to the tab where you have your Cloud9 environment opened.</p></li>
 <li><p>Log into your Amazon ECR registry using the helper provided by the AWS CLI in the Cloud9 terminal:</p>
 <pre class="console"><code>$(aws ecr get-login --no-include-email)</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ $(aws ecr get-login --no-include-email)
 Login Succeeded</code></pre></li>
 <li><p>Push your Docker image. Ensure you change the image to the image tag you used in step 1:</p>
 <pre class="console"><code>docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop</code></pre>
-<p><button class="btn btn-outline-primary copy">Copy to Clipboard</button></p>
+<button class="btn btn-outline-primary copy">
+Copy to Clipboard
+</button>
 <p>You’ll see the Docker image being pushed:</p>
 <pre class="console"><code>Admin:~/environment/fargate-workshop-app (master) $ docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
 The push refers to a repository [123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop]

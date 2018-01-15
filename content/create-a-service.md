@@ -199,7 +199,7 @@ using the AWS Management Console or the AWS Command Line Interface.
     ```console
     aws ecs register-task-definition --cli-input-json file://~/environment/fargate-workshop-app/ecs/task_definition.json
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Create the CloudWatch Logs log group `/ecs/workshop` configured in your new
    task definition by running this command in your Cloud9 terminal:
@@ -207,7 +207,7 @@ using the AWS Management Console or the AWS Command Line Interface.
     ```console
     aws logs create-log-group --log-group-name /ecs/workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 #### 3. Create an Application Load Balancer
 
@@ -249,7 +249,7 @@ using the AWS Management Console or the AWS Command Line Interface.
         aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
           --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
         ```
-        <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Select all **Availability Zones** configured for the VPC by checking each
    checkbox.
@@ -338,7 +338,7 @@ Docker container.
         aws ec2 describe-vpcs --query Vpcs[0].VpcId --output text \
           --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
         ```
-        <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Select both subnets in **Subnets**.
 
@@ -394,7 +394,7 @@ Docker container.
     ```console
     aws elbv2 describe-target-groups --names workshop --query TargetGroups[0].TargetGroupArn --output text
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. To find the IDs of the subnets created in the first run wizard, run this
    command in the Cloud9 terminal:
@@ -403,7 +403,7 @@ Docker container.
     aws ec2 describe-subnets --query Subnets[].SubnetId --output text \
        --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. To find the ID of the security group created in the first run wizard, run
    this command in the Cloud9 terminal:
@@ -412,7 +412,7 @@ Docker container.
     aws ec2 describe-security-groups --query SecurityGroups[].GroupId --output text \
        --filters Name=tag:aws:cloudformation:stack-name,Values=EC2ContainerService-workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Now that all the values are filled-in, we can create the service by running
    this command in the Cloud9 terminal:
@@ -420,7 +420,7 @@ Docker container.
     ```console
     aws ecs create-service --cli-input-json file://~/environment/fargate-workshop-app/ecs/service.json
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. The service will now start your task. Wait for your task to transition to
    **RUNNING**. You can view the status of your task by running this in your
@@ -433,7 +433,7 @@ Docker container.
       --query tasks[].lastStatus \
       --output text
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Hit your task via the load balancer through the DNSName you noted in the
    previous section. For example:

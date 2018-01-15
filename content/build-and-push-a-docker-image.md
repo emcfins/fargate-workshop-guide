@@ -38,7 +38,7 @@ tag of your repository from the repository URI you noted in the previous module.
     ```console
     git clone https://github.com/jpignata/fargate-workshop-app
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     ```console
     Admin:~/environment $ git clone https://github.com/jpignata/fargate-workshop-app
@@ -83,7 +83,7 @@ tag of your repository from the repository URI you noted in the previous module.
     ```console
     cd fargate-workshop-app
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Build the Docker image and tag it using the repository URI you noted in the
    previous module. For example, if the repository URI were
@@ -92,7 +92,7 @@ tag of your repository from the repository URI you noted in the previous module.
     ```console
     docker build --tag 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop .
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     Ensure that you change the image name to the repository URI you noted in the
     previous module. You'll see Docker building the image by applying each
@@ -120,7 +120,7 @@ tag of your repository from the repository URI you noted in the previous module.
     ```console
     docker images 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     ```console
     Admin:~/environment/fargate-workshop-app (master) $ docker images 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
@@ -164,7 +164,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     ```console
     sudo yum install -y jq
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
 1. Run the Docker container by running  `docker run` in the Cloud9 terminal
    using the Docker image we built in step 1:
@@ -173,7 +173,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     docker run --detach --publish 80:80 --volume $HOME/.aws:/root/.aws \
       123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     You'll need to change the last parameter to the Docker image tag you
     specified in step 1. Let's look at each part of the command to understand
@@ -191,7 +191,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     ```console
     curl -Ss http://127.0.0.1/ | jq
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     If the application is running, you'll see a JSON object with the hostname
     which will match the container ID you saw after running the previous step:
@@ -210,7 +210,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     ```console
     curl -Ss http://127.0.0.1/quotes | jq
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     As we haven't added any quotes yet, we'll see an empty array:
 
@@ -226,7 +226,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     ```console
     curl -Ss http://127.0.0.1/quotes -X PUT -H "Content-Type: application/json" -d '{"Text":"There are no passengers on spaceship earth. We are all crew.","AttributedTo":"Marshall McLuhan"}'
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     This command sends the following JSON object to the quotes create endpoint:
 
@@ -243,7 +243,7 @@ Run a Docker container in your Cloud9 environment and experiment with it using
     ```console
     curl -Ss http://127.0.0.1/quotes | jq
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     The output will resemble this, with a different UUID:
 
@@ -274,7 +274,7 @@ Log into your Amazon ECR registry and push the Docker image into its repository.
     ```console
     $(aws ecr get-login --no-include-email)
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     ```console
     Admin:~/environment/fargate-workshop-app (master) $ $(aws ecr get-login --no-include-email)
@@ -287,7 +287,7 @@ Log into your Amazon ECR registry and push the Docker image into its repository.
     ```console
     docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/workshop
     ```
-    <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
+<button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
     You'll see the Docker image being pushed:
 
