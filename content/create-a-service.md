@@ -370,8 +370,8 @@ Docker container.
 1. The service will now start your task. Click **View Service** and wait for
    your task to transition to **RUNNING**.
 
-1. Hit your task via the load balancer through the DNSName you noted in the
-   previous section. For example:
+1. Hit your task via the load balancer through the DNSName you noted in
+   [Create an Application Load Balancer][create-an-alb]. For example:
 
     ```console
     curl -Ss http://workshop-123456789.us-east-1.elb.amazonaws.com/quotes
@@ -435,8 +435,8 @@ Docker container.
     ```
 <button class="btn btn-outline-primary copy">Copy to Clipboard</button>
 
-1. Hit your task via the load balancer through the DNSName you noted in the
-   previous section. For example:
+1. Hit your task via the load balancer through the DNSName you noted in
+   [Create an Application Load Balancer][create-an-alb]. For example:
 
     ```console
     curl -Ss http://workshop-123456789.us-east-1.elb.amazonaws.com/quotes
@@ -453,3 +453,4 @@ Load Balancer.
 🎉 You've completed this section!
 
 [find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
+[create-an-alb]: #create-an-application-load-balancer
