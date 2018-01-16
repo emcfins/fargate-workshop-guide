@@ -31,6 +31,8 @@ configure a new service to run our container on Amazon ECS using AWS Fargate.
 
 The modules build on each other and are intended to be executed linearly.
 
+Ensure that you've followed the [setup guide][setup] before starting the modules.
+
 | Module | Description |
 | ---------------- | -------------------------------------------------------- |
 | [Getting Started with Amazon ECS using AWS Fargate][getting-started] | Create a new Amazon ECS cluster using the AWS Management Console. At the end of this module, we'll have a new ECS cluster and supporting infrastructure such as a VPC and subnets and a small Hello World application running. |
