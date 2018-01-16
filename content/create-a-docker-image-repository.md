@@ -7,7 +7,7 @@ container images without worrying about managing or scaling the underlying
 infrastructure.
 
 Amazon ECR is integrated with Amazon ECS to simplify production deployment
-workshop and AWS IAM which provides provides resource-level control of each
+workshop and AWS IAM which provides resource-level control of each
 repository.
 
 We'll use this repository to store our Docker container images so that we can
