@@ -480,5 +480,11 @@ Load Balancer.
 
 🎉 You've completed this section!
 
+### Next
+
+✅  If you want to dive into CI/CD, try our next section, [Build a Continuous Deployment Pipeline][build-a-cd-pipeline], wherein we
+will use AWS CodeBuild to build our container and build a CI/CD pipeline with AWS CodePipeline to orchestrate the process and deploy it to ECS.
+
 [find-account-id]: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
 [create-an-alb]: #create-an-application-load-balancer
+[build-a-cd-pipeline]: build-a-continuous-deployment-pipeline.html
