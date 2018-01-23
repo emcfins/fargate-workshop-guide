@@ -115,9 +115,8 @@ it to authenticate with ECR and push an image into our repository.
 1. Expand the **Read** permissions and check the **BatchCheckLayerAvailability**
    and **GetAuthorizationToken** checkboxes.
 
-1. Expand the **Write** permissions and check the **CompleteLayerUpload**,
-   **UploadLayerPart**, **InitiateLayerUpload**, and *PutImage**
-   checkboxes.
+1. Expand the **Write** permissions and check the **CompleteLayerUpload**, 
+   **InitiateLayerUpload**, **PutImage**, and **UploadLayerPart** checkboxes.
 
 1. Click **Resources** to limit the role to the **workshop** repository.
 
