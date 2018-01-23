@@ -31,7 +31,7 @@ configure a new service to run our container on Amazon ECS using AWS Fargate.
 
 The modules build on each other and are intended to be executed linearly.
 
-Ensure that you've followed the [setup guide][setup] before starting the modules.
+Ensure that you've followed the [setup guide][setup] before starting the following modules.
 
 | Module | Description |
 | ---------------- | -------------------------------------------------------- |
